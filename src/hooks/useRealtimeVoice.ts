@@ -10,7 +10,6 @@ const REALTIME_URL = 'https://api.openai.com/v1/realtime/calls'
 
 interface StartCallOptions {
   agentId: string
-  listingId?: string
   onToolCall: (name: string, args: Record<string, unknown>) => Promise<Record<string, unknown>>
 }
 
@@ -30,14 +29,12 @@ export function useRealtimeVoice() {
   const { setStatus, setConversationId, appendTranscript, setError, reset } = useVoiceStore()
 
   const startCall = useCallback(
-    async ({ agentId, listingId, onToolCall }: StartCallOptions) => {
+    async ({ agentId, onToolCall }: StartCallOptions) => {
       try {
         setStatus('connecting')
 
         const res = await fetch(`/api/agents/${agentId}/session`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ listingId }),
         })
         if (!res.ok) {
           // The session route sends a real message for known cases (e.g.

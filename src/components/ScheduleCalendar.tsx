@@ -99,7 +99,6 @@ function AppointmentRow({ appt, onClick }: { appt: AppointmentWithDetails; onCli
           </p>
           <p className="text-xs text-[var(--text-3)] truncate">
             {formatDateTime(appt.scheduled_at)}
-            {appt.listing ? ` - ${appt.listing.title}` : ''}
           </p>
           <div className="mt-1.5 hidden sm:flex flex-wrap items-center gap-2">
             <span className="inline-flex items-center gap-1 rounded-full bg-[var(--bg-raised)] px-2 py-0.5 text-[11px] font-medium text-[var(--text-2)]">

@@ -34,14 +34,13 @@ export async function PATCH(request: Request, props: { params: Promise<{ appoint
 
   const clientEmail = appointment.client?.email
   const clientName = appointment.client?.name ?? 'Cliente'
-  const businessName = appointment.business?.name ?? 'la agencia'
+  const businessName = appointment.business?.name ?? 'la clínica'
   if (clientEmail) {
     void sendAppointmentCancelledEmail({
       to: clientEmail,
       clientName,
       businessName,
       scheduledAt: appointment.scheduled_at,
-      listingTitle: appointment.listing?.title,
       reason: parsed.data.reason,
     }).catch(() => {})
   }
@@ -52,7 +51,6 @@ export async function PATCH(request: Request, props: { params: Promise<{ appoint
       businessName,
       clientName,
       scheduledAt: appointment.scheduled_at,
-      listingTitle: appointment.listing?.title,
       reason: parsed.data.reason,
     }).catch(() => {})
   }

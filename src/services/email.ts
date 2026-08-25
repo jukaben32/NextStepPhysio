@@ -49,14 +49,14 @@ export async function sendAppointmentConfirmationEmail(opts: {
   clientName: string
   businessName: string
   scheduledAt: string
-  listingTitle?: string
+  serviceTitle?: string
 }) {
   return sendEmail({
     to: opts.to,
     subject: `Tu cita con ${opts.businessName} fue confirmada`,
     html: `
       <p>Hola ${opts.clientName},</p>
-      <p>Tu cita${opts.listingTitle ? ` para <strong>${opts.listingTitle}</strong>` : ''}
+      <p>Tu cita${opts.serviceTitle ? ` para <strong>${opts.serviceTitle}</strong>` : ''}
       con <strong>${opts.businessName}</strong> quedó confirmada para el
       <strong>${formatEmailDateTime(opts.scheduledAt)}</strong>.</p>
       <p>¡Te esperamos!</p>
@@ -68,14 +68,14 @@ export async function sendAppointmentCompletedEmail(opts: {
   to: string
   clientName: string
   businessName: string
-  listingTitle?: string
+  serviceTitle?: string
 }) {
   return sendEmail({
     to: opts.to,
     subject: `Tu cita con ${opts.businessName} fue completada`,
     html: `
       <p>Hola ${opts.clientName},</p>
-      <p>Tu cita${opts.listingTitle ? ` para <strong>${opts.listingTitle}</strong>` : ''}
+      <p>Tu cita${opts.serviceTitle ? ` para <strong>${opts.serviceTitle}</strong>` : ''}
       con <strong>${opts.businessName}</strong> se marcó como completada. Gracias por tu tiempo,
       esperamos poder ayudarte pronto con el siguiente paso.</p>
     `,
@@ -87,7 +87,7 @@ export async function sendAppointmentCancelledEmail(opts: {
   clientName: string
   businessName: string
   scheduledAt: string
-  listingTitle?: string
+  serviceTitle?: string
   reason?: string
 }) {
   return sendEmail({
@@ -95,7 +95,7 @@ export async function sendAppointmentCancelledEmail(opts: {
     subject: `Tu cita con ${opts.businessName} fue cancelada`,
     html: `
       <p>Hola ${opts.clientName},</p>
-      <p>Tu cita${opts.listingTitle ? ` para <strong>${opts.listingTitle}</strong>` : ''}
+      <p>Tu cita${opts.serviceTitle ? ` para <strong>${opts.serviceTitle}</strong>` : ''}
       con <strong>${opts.businessName}</strong>, programada para el
       <strong>${formatEmailDateTime(opts.scheduledAt)}</strong>, fue cancelada.</p>
       ${opts.reason ? `<p>Motivo: ${opts.reason}</p>` : ''}
@@ -113,7 +113,7 @@ export async function sendAppointmentCancelledOwnerEmail(opts: {
   businessName: string
   clientName: string
   scheduledAt: string
-  listingTitle?: string
+  serviceTitle?: string
   reason?: string
 }) {
   return sendEmail({
@@ -121,7 +121,7 @@ export async function sendAppointmentCancelledOwnerEmail(opts: {
     subject: `Cita cancelada por el cliente — ${opts.clientName}`,
     html: `
       <p><strong>${opts.clientName}</strong> canceló su cita con <strong>${opts.businessName}</strong>${
-      opts.listingTitle ? ` para <strong>${opts.listingTitle}</strong>` : ''
+      opts.serviceTitle ? ` para <strong>${opts.serviceTitle}</strong>` : ''
     }, programada para el <strong>${formatEmailDateTime(opts.scheduledAt)}</strong>.</p>
       ${opts.reason ? `<p>Motivo: ${opts.reason}</p>` : ''}
     `,

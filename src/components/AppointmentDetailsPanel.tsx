@@ -102,7 +102,7 @@ export function AppointmentDetailsPanel({
               <InfoRow
                 icon={Tag}
                 label="Servicio"
-                value={appt.service?.name ?? appt.listing?.title ?? 'Visita de propiedad'}
+                value={appt.service?.name ?? 'Cita'}
               />
             </div>
           </section>

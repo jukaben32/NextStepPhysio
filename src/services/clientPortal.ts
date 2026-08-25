@@ -15,23 +15,21 @@ type DB = SupabaseClient<Database>
 type AppointmentJoinRow = Appointment & {
   clients: { id: string; name: string; phone: string | null; email: string | null; budget: number | null; pre_approval_number: string | null } | null
   business_services: { id: string; name: string; price: number | null; duration_minutes: number } | null
-  listings: { id: string; title: string; listing_code: string } | null
   businesses: { id: string; name: string; phone: string | null; contact_email: string | null; stripe_connected: boolean } | null
 }
 
 function mapPortalAppointment(row: AppointmentJoinRow): PortalAppointment {
-  const { clients, business_services, listings, businesses, ...rest } = row
+  const { clients, business_services, businesses, ...rest } = row
   return {
     ...rest,
     client: clients,
     service: business_services,
-    listing: listings,
     business: businesses,
   }
 }
 
 const PORTAL_APPOINTMENT_SELECT =
-  '*, clients(id, name, phone, email, budget, pre_approval_number), business_services(id, name, price, duration_minutes), listings(id, title, listing_code), businesses(id, name, phone, contact_email, stripe_connected)'
+  '*, clients(id, name, phone, email, budget, pre_approval_number), business_services(id, name, price, duration_minutes), businesses(id, name, phone, contact_email, stripe_connected)'
 
 // A person can be a `clients` row in more than one business (booked with
 // two different agencies) — each is a separate row with its own id, all

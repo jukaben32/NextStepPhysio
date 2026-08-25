@@ -12,12 +12,6 @@ interface PublicService {
   durationMinutes: number | null
 }
 
-interface PublicListing {
-  id: string
-  title: string
-  listingCode: string
-}
-
 // This widget is public/client-facing and stays in English regardless of the
 // dashboard's locale, so it formats price display itself rather than pulling
 // in the Spanish-language dashboard helper.
@@ -32,17 +26,14 @@ function formatPublicServicePrice(s: Pick<PublicService, 'price' | 'priceMax' | 
 }
 
 // The "Book" tab of the floating widget: a single-page form (Full Name,
-// Phone, Email, Budget Range, Property Interest, Service, Date & Time,
-// Notes) so every booking captures the same precise fields the dashboard's
-// manual "Book Viewing" form does — talks only to the public,
-// unauthenticated /api/widget/public/[businessId]/{services,listings,book}
-// routes, so it works both embedded on a third-party site and on the
-// public /sites/[slug] page.
+// Phone, Email, Program, Date & Time, Notes) — talks only to the public,
+// unauthenticated /api/widget/public/[businessId]/{services,book} routes, so
+// it works both embedded on a third-party site and on the public
+// /sites/[slug] page.
 export function WidgetBookingPanel({
   businessId,
   primaryColor,
   isDark,
-  agentId,
 }: {
   businessId: string
   primaryColor: string
@@ -50,13 +41,10 @@ export function WidgetBookingPanel({
   agentId?: string | null
 }) {
   const [services, setServices] = useState<PublicService[] | null>(null)
-  const [listings, setListings] = useState<PublicListing[] | null>(null)
   const [form, setForm] = useState({
     name: '',
     phone: '',
     email: '',
-    budget: '',
-    listingId: '',
     serviceId: '',
     scheduledAt: '',
     notes: '',
@@ -70,14 +58,7 @@ export function WidgetBookingPanel({
       .then((r) => r.json())
       .then((d) => setServices(d.services ?? []))
       .catch(() => setServices([]))
-    const listingsUrl = agentId
-      ? `/api/widget/public/${businessId}/listings?agentId=${encodeURIComponent(agentId)}`
-      : `/api/widget/public/${businessId}/listings`
-    fetch(listingsUrl)
-      .then((r) => r.json())
-      .then((d) => setListings(d.listings ?? []))
-      .catch(() => setListings([]))
-  }, [businessId, agentId])
+  }, [businessId])
 
   async function submitBooking(e: React.FormEvent) {
     e.preventDefault()
@@ -89,12 +70,10 @@ export function WidgetBookingPanel({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           serviceId: form.serviceId || undefined,
-          listingId: form.listingId || undefined,
           scheduledAt: new Date(form.scheduledAt).toISOString(),
           clientName: form.name,
           clientEmail: form.email,
           clientPhone: form.phone || undefined,
-          budget: form.budget || undefined,
           notes: form.notes || undefined,
         }),
       })
@@ -123,20 +102,18 @@ export function WidgetBookingPanel({
     return (
       <div className="py-3 text-center space-y-2">
         <CheckCircle2 className="w-8 h-8 mx-auto" style={{ color: primaryColor }} />
-        <p className="text-sm font-semibold">Viewing Requested!</p>
+        <p className="text-sm font-semibold">Appointment Requested!</p>
         <p className={`text-xs ${subtleText}`}>
-          We will confirm your viewing for{' '}
+          We will confirm your appointment for{' '}
           {when.toLocaleDateString(undefined, {
             weekday: 'short',
             month: 'short',
             day: 'numeric',
-            timeZone: 'America/Santo_Domingo',
           })}{' '}
           at{' '}
           {when.toLocaleTimeString(undefined, {
             hour: 'numeric',
             minute: '2-digit',
-            timeZone: 'America/Santo_Domingo',
           })}
           .
         </p>
@@ -183,38 +160,13 @@ export function WidgetBookingPanel({
 
       <div className="grid grid-cols-2 gap-2">
         <div>
-          <p className={labelCls}>Budget Range</p>
-          <input
-            className={inputCls}
-            placeholder="$400k–$700k"
-            value={form.budget}
-            onChange={(e) => setForm({ ...form, budget: e.target.value })}
-          />
-        </div>
-        <div>
-          <p className={labelCls}>Property Interest</p>
-          <select
-            className={`${inputCls} ${isDark ? '[color-scheme:dark]' : ''}`}
-            value={form.listingId}
-            onChange={(e) => setForm({ ...form, listingId: e.target.value })}
-          >
-            <option value="">— Select a property —</option>
-            {listings?.map((l) => (
-              <option key={l.id} value={l.id}>{l.title}</option>
-            ))}
-          </select>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-2">
-        <div>
-          <p className={labelCls}>Service</p>
+          <p className={labelCls}>Program</p>
           <select
             className={`${inputCls} ${isDark ? '[color-scheme:dark]' : ''}`}
             value={form.serviceId}
             onChange={(e) => setForm({ ...form, serviceId: e.target.value })}
           >
-            <option value="">— Select a service —</option>
+            <option value="">— Select a program —</option>
             {services?.map((s) => (
               <option key={s.id} value={s.id}>
                 {s.name} · {formatPublicServicePrice(s)}
@@ -238,7 +190,7 @@ export function WidgetBookingPanel({
         <p className={labelCls}>Notes</p>
         <textarea
           className={inputCls}
-          placeholder="Any additional notes or special requirements…"
+          placeholder="Tell us about your injury or recovery goals…"
           rows={2}
           value={form.notes}
           onChange={(e) => setForm({ ...form, notes: e.target.value })}
@@ -253,7 +205,7 @@ export function WidgetBookingPanel({
         className="w-full rounded-lg py-2 text-sm font-medium text-white disabled:opacity-40"
         style={{ backgroundColor: primaryColor }}
       >
-        {submitting ? 'Booking…' : 'Book Viewing'}
+        {submitting ? 'Booking…' : 'Book Appointment'}
       </button>
     </form>
   )

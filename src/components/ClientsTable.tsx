@@ -157,7 +157,7 @@ export function ClientsTable({
                                 <span className="flex items-center gap-1.5 min-w-0">
                                   <Home className="w-3.5 h-3.5 text-[var(--text-3)] shrink-0" />
                                   <span className="truncate">
-                                    {appt.service?.name ?? appt.listing?.title ?? 'Visita de propiedad'}
+                                    {appt.service?.name ?? 'Cita'}
                                   </span>
                                 </span>
                               </td>

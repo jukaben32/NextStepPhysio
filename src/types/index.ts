@@ -3,8 +3,6 @@ import type { Tables } from './database'
 export type Business = Tables<'businesses'>
 export type BusinessSubscription = Tables<'business_subscriptions'>
 export type AiAgent = Tables<'ai_agents'>
-export type Listing = Tables<'listings'>
-export type ListingPhoto = Tables<'listing_photos'>
 export type Client = Tables<'clients'>
 export type Conversation = Tables<'conversations'>
 export type ConversationMessage = Tables<'conversation_messages'>
@@ -60,51 +58,6 @@ export interface DashboardAnalytics {
   appointments_this_week: number
 }
 
-export interface ListingWithPhotos extends Listing {
-  photos: ListingPhoto[]
-  agents: Pick<AiAgent, 'id' | 'name' | 'specialty' | 'status'>[]
-}
-
-// ─── Pre-sale projects ("Proyecto en Preventa") ───────────────────────────
-export type PreventaProject = Tables<'preventa_projects'>
-export type PreventaUnitType = Tables<'preventa_unit_types'>
-export type PreventaProjectPhoto = Tables<'preventa_project_photos'>
-export type PreventaProjectAgent = Tables<'preventa_project_agents'>
-
-export interface PreventaProjectWithDetails extends PreventaProject {
-  unitTypes: PreventaUnitType[]
-  photos: PreventaProjectPhoto[]
-  agents: Pick<AiAgent, 'id' | 'name' | 'specialty' | 'status'>[]
-}
-
-// ─── Channels (Airbnb/Booking/VRBO real, via channel-manager co-hosting) ──
-export type ChannelProviderAccount = Tables<'channel_provider_accounts'>
-export type ChannelHostConnection = Tables<'channel_host_connections'>
-export type ChannelListing = Tables<'channel_listings'>
-export type ChannelBooking = Tables<'channel_bookings'>
-export type ChannelSyncLogEntry = Tables<'channel_sync_log'>
-export type BookingAffiliateSettings = Tables<'booking_affiliate_settings'>
-
-export interface ChannelHostConnectionWithStats extends ChannelHostConnection {
-  listingCount: number
-  activeListingCount: number
-  pendingCommission: number
-  paidCommission: number
-}
-
-export interface ChannelListingWithDetails extends ChannelListing {
-  listing: Pick<Listing, 'id' | 'title' | 'listing_code' | 'price' | 'currency' | 'cover_photo_url' | 'listing_type' | 'rental_period'>
-  hostConnection: Pick<ChannelHostConnection, 'id' | 'owner_name' | 'channel' | 'status' | 'commission_pct'>
-}
-
-export interface ChannelBookingWithDetails extends ChannelBooking {
-  listing: Pick<ChannelListing, 'id' | 'listing_id'> & {
-    listingTitle: string
-    ownerName: string
-    channel: ChannelHostConnection['channel']
-  }
-}
-
 // ─── Bank transfer payments (manual plan-upgrade path) ────────────────────
 export type BankTransferPayment = Tables<'bank_transfer_payments'>
 
@@ -115,7 +68,6 @@ export interface ConversationWithClient extends Conversation {
 export interface AppointmentWithDetails extends Appointment {
   client: Pick<Client, 'id' | 'name' | 'phone' | 'email' | 'budget' | 'pre_approval_number'> | null
   service: Pick<BusinessService, 'id' | 'name' | 'price' | 'duration_minutes'> | null
-  listing: Pick<Listing, 'id' | 'title' | 'listing_code'> | null
 }
 
 // Client Portal — same shape, plus which business it's with (a client can
@@ -127,6 +79,32 @@ export interface PortalAppointment extends AppointmentWithDetails {
 
 export interface PortalSupportTicket extends SupportTicketWithClient {
   business_name: string | null
+}
+
+// ─── Recovery progress (premium) ───────────────────────────────────────────
+// One row per check-in — logged by clinic staff after a session, or by a
+// patient self-reporting through the portal (see logged_by). Charted over
+// time on both the dashboard (per-patient) and the patient portal (own
+// history only).
+export type RecoveryLog = Tables<'recovery_logs'>
+
+export interface RecoveryLogWithClient extends RecoveryLog {
+  client: Pick<Client, 'id' | 'name' | 'phone' | 'email'> | null
+}
+
+// ─── Exercise library (premium) ────────────────────────────────────────────
+// exercise_videos is the clinic's reusable catalog (like business_services);
+// prescribed_exercises assigns a specific video to a specific patient with
+// its own sets/reps/frequency, independent of the catalog entry's defaults.
+export type ExerciseVideo = Tables<'exercise_videos'>
+export type PrescribedExercise = Tables<'prescribed_exercises'>
+
+export interface PrescribedExerciseWithVideo extends PrescribedExercise {
+  video: Pick<ExerciseVideo, 'id' | 'title' | 'video_url' | 'thumbnail_url' | 'duration_seconds' | 'category'> | null
+}
+
+export interface PrescribedExerciseWithClient extends PrescribedExerciseWithVideo {
+  client: Pick<Client, 'id' | 'name' | 'phone' | 'email'> | null
 }
 
 // ─── Scheduling ───────────────────────────────────────────────────────────
@@ -169,7 +147,6 @@ export interface VoiceCallOutcome {
   clientName?: string
   clientPhone?: string
   budget?: number
-  listingId?: string
   appointment?: {
     date: string
     time: string

@@ -572,6 +572,69 @@ export interface Database {
         Update: Partial<Database['public']['Tables']['business_availability']['Row']>
         Relationships: []
       }
+      recovery_logs: {
+        Row: {
+          id: string
+          business_id: string
+          client_id: string
+          appointment_id: string | null
+          pain_level: number | null
+          mobility_score: number | null
+          notes: string | null
+          logged_by: string
+          logged_at: string
+          created_at: string
+        }
+        Insert: Partial<Database['public']['Tables']['recovery_logs']['Row']> & {
+          business_id: string
+          client_id: string
+        }
+        Update: Partial<Database['public']['Tables']['recovery_logs']['Row']>
+        Relationships: []
+      }
+      exercise_videos: {
+        Row: {
+          id: string
+          business_id: string
+          title: string
+          description: string | null
+          video_url: string
+          thumbnail_url: string | null
+          category: string | null
+          duration_seconds: number | null
+          is_active: boolean
+          sort_order: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: Partial<Database['public']['Tables']['exercise_videos']['Row']> & {
+          business_id: string
+          title: string
+          video_url: string
+        }
+        Update: Partial<Database['public']['Tables']['exercise_videos']['Row']>
+        Relationships: []
+      }
+      prescribed_exercises: {
+        Row: {
+          id: string
+          business_id: string
+          client_id: string
+          exercise_video_id: string
+          sets: number | null
+          reps: number | null
+          frequency: string | null
+          notes: string | null
+          assigned_at: string
+        }
+        Insert: Partial<Database['public']['Tables']['prescribed_exercises']['Row']> & {
+          business_id: string
+          client_id: string
+          exercise_video_id: string
+        }
+        Update: Partial<Database['public']['Tables']['prescribed_exercises']['Row']>
+        Relationships: []
+      }
       knowledge_documents: {
         Row: {
           id: string

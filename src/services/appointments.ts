@@ -1,6 +1,6 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
 import type { Database } from '@/types/database'
-import type { Appointment, AppointmentWithDetails, Client, BusinessService, Listing } from '@/types'
+import type { Appointment, AppointmentWithDetails, Client, BusinessService } from '@/types'
 import { PLAN_LIMITS, isWithinLimit } from '@/constants'
 import type { PlanId, AvailableSlot } from '@/types'
 import { formatDateTime } from '@/lib/formatDate'
@@ -31,7 +31,6 @@ function santoDomingoInstant(dateKey: string, hours: number, minutes: number): D
 type AppointmentJoinRow = Appointment & {
   clients: Pick<Client, 'id' | 'name' | 'phone' | 'email' | 'budget' | 'pre_approval_number'> | null
   business_services: Pick<BusinessService, 'id' | 'name' | 'price' | 'duration_minutes'> | null
-  listings: Pick<Listing, 'id' | 'title' | 'listing_code'> | null
 }
 
 function mapAppointmentRow(row: AppointmentJoinRow): AppointmentWithDetails {
@@ -39,7 +38,6 @@ function mapAppointmentRow(row: AppointmentJoinRow): AppointmentWithDetails {
     ...row,
     client: row.clients ?? null,
     service: row.business_services ?? null,
-    listing: row.listings ?? null,
   }
 }
 
@@ -50,7 +48,7 @@ export async function listAppointmentsForBusiness(
 ): Promise<AppointmentWithDetails[]> {
   let query = supabase
     .from('appointments')
-    .select('*, clients(id, name, phone, email, budget, pre_approval_number), business_services(id, name, price, duration_minutes), listings(id, title, listing_code)')
+    .select('*, clients(id, name, phone, email, budget, pre_approval_number), business_services(id, name, price, duration_minutes)')
     .eq('business_id', businessId)
     .order('scheduled_at', { ascending: false })
 
@@ -70,7 +68,7 @@ export async function getAppointmentWithDetails(
 ): Promise<AppointmentWithDetails | null> {
   const { data, error } = await supabase
     .from('appointments')
-    .select('*, clients(id, name, phone, email, budget, pre_approval_number), business_services(id, name, price, duration_minutes), listings(id, title, listing_code)')
+    .select('*, clients(id, name, phone, email, budget, pre_approval_number), business_services(id, name, price, duration_minutes)')
     .eq('business_id', businessId)
     .eq('id', appointmentId)
     .maybeSingle()
@@ -90,7 +88,7 @@ export async function getAppointmentPublic(
   const { data, error } = await supabase
     .from('appointments')
     .select(
-      '*, clients(id, name, phone, email, budget, pre_approval_number), business_services(id, name, price, duration_minutes), listings(id, title, listing_code), businesses(name, phone, contact_email, address)'
+      '*, clients(id, name, phone, email, budget, pre_approval_number), business_services(id, name, price, duration_minutes), businesses(name, phone, contact_email, address)'
     )
     .eq('id', appointmentId)
     .maybeSingle()
@@ -114,7 +112,6 @@ export async function createAppointment(
   businessId: string,
   plan: PlanId,
   input: {
-    listingId?: string
     serviceId?: string
     clientId?: string
     conversationId?: string
@@ -162,7 +159,6 @@ export async function createAppointment(
     .from('appointments')
     .insert({
       business_id: businessId,
-      listing_id: input.listingId,
       service_id: input.serviceId,
       client_id: input.clientId,
       conversation_id: input.conversationId,
@@ -178,8 +174,8 @@ export async function createAppointment(
   await supabase.from('notifications').insert({
     business_id: businessId,
     type: 'appointment_booked',
-    title: 'New viewing booked',
-    body: `Se agendó una visita para el ${formatDateTime(input.scheduledAt)}`,
+    title: 'New appointment booked',
+    body: `Se agendó una cita para el ${formatDateTime(input.scheduledAt)}`,
   })
 
   return data

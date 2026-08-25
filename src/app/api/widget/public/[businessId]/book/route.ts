@@ -48,7 +48,6 @@ export async function POST(request: Request, props: { params: Promise<{ business
   try {
     const appointment = await createAppointment(supabase, business.id, plan, {
       serviceId: input.serviceId ?? undefined,
-      listingId: input.listingId ?? undefined,
       clientId: client.id,
       scheduledAt: input.scheduledAt,
       status: 'scheduled',
@@ -61,7 +60,6 @@ export async function POST(request: Request, props: { params: Promise<{ business
       businessName: business.name,
       serviceName: service?.name,
       scheduledAt: appointment.scheduled_at,
-      budget: input.budget,
       businessAddress: business.address ?? undefined,
       businessPhone: business.phone ?? undefined,
       businessContactEmail: business.contact_email ?? undefined,

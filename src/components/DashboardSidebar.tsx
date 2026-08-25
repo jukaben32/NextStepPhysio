@@ -5,14 +5,11 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import {
   LayoutDashboard,
-  House,
-  Building2,
   CalendarCheck,
   PhoneCall,
   UsersRound,
   Bot,
   BarChart3,
-  Palmtree,
   Briefcase,
   BookOpen,
   MessagesSquare,
@@ -27,6 +24,8 @@ import {
   LifeBuoy,
   Settings,
   ShieldCheck,
+  Activity,
+  PlaySquare,
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 
@@ -35,13 +34,10 @@ export const NAV_SECTIONS = [
     items: [
       { href: '/dashboard', label: 'Inicio', icon: LayoutDashboard },
       { href: '/dashboard/analytics', label: 'Analítica', icon: BarChart3 },
-      { href: '/dashboard/listings', label: 'Propiedades', icon: House },
-      { href: '/dashboard/projects', label: 'Proyectos Preventa', icon: Building2 },
-      { href: '/dashboard/channels', label: 'Airbnb & Canales', icon: Palmtree },
       { href: '/dashboard/call-log', label: 'Llamadas', icon: PhoneCall },
       { href: '/dashboard/viewings', label: 'Citas', icon: CalendarCheck },
       { href: '/dashboard/schedule', label: 'Horario', icon: Clock },
-      { href: '/dashboard/clients', label: 'Clientes', icon: UsersRound },
+      { href: '/dashboard/clients', label: 'Pacientes', icon: UsersRound },
     ],
   },
   {
@@ -49,6 +45,8 @@ export const NAV_SECTIONS = [
     items: [
       { href: '/dashboard/ai-agents', label: 'Agentes IA', icon: Bot },
       { href: '/dashboard/services', label: 'Servicios', icon: Briefcase },
+      { href: '/dashboard/progress', label: 'Progreso', icon: Activity },
+      { href: '/dashboard/exercises', label: 'Ejercicios', icon: PlaySquare },
       { href: '/dashboard/knowledge', label: 'Conocimiento', icon: BookOpen },
       { href: '/dashboard/widget', label: 'Widget', icon: MessagesSquare },
       { href: '/dashboard/whatsapp', label: 'WhatsApp', icon: MessageCircle },

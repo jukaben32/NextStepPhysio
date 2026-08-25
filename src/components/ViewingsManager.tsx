@@ -1,8 +1,8 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { Banknote, CalendarCheck, CalendarX2, CheckCircle2, CreditCard, Eye, Search, X, XCircle } from 'lucide-react'
-import type { AppointmentWithDetails, BusinessService, Listing } from '@/types'
+import { CalendarCheck, CalendarX2, CheckCircle2, CreditCard, Banknote, Eye, Search, X, XCircle } from 'lucide-react'
+import type { AppointmentWithDetails, BusinessService } from '@/types'
 import { APPOINTMENT_STATUSES } from '@/constants'
 import { formatDateTime } from '@/lib/formatDate'
 import {
@@ -12,11 +12,6 @@ import {
   PAYMENT_LABELS,
 } from '@/lib/appointmentFormat'
 import { NewViewingModal } from '@/components/NewViewingModal'
-
-function formatMoney(value: number | null | undefined): string {
-  if (!value) return '-'
-  return '$' + value.toLocaleString()
-}
 
 function initials(name: string | null | undefined): string {
   const clean = name?.trim()
@@ -34,10 +29,6 @@ function serviceLabel(appt: AppointmentWithDetails): string {
   return appt.service?.name ?? 'Sin servicio asignado'
 }
 
-function listingLabel(appt: AppointmentWithDetails): string {
-  return appt.listing?.title ?? 'Sin propiedad asignada'
-}
-
 function ViewingDetailsModal({ appt, onClose }: { appt: AppointmentWithDetails; onClose: () => void }) {
   return (
     <div className="fixed inset-0 z-50 bg-black/40 flex items-start justify-center p-3 overflow-y-auto" onClick={onClose}>
@@ -52,7 +43,6 @@ function ViewingDetailsModal({ appt, onClose }: { appt: AppointmentWithDetails; 
               <p className="text-xs text-[var(--text-3)] mt-0.5">
                 {formatDateTime(appt.scheduled_at)}
                 {appt.service ? ` - ${appt.service.name}` : ''}
-                {appt.listing ? ` - ${appt.listing.title}` : ''}
               </p>
             </div>
           </div>
@@ -72,7 +62,7 @@ function ViewingDetailsModal({ appt, onClose }: { appt: AppointmentWithDetails; 
 
         <div className="grid grid-cols-2 gap-3 bg-[var(--bg-raised)] rounded-lg p-3 text-sm">
           <div>
-            <p className="text-[10px] uppercase tracking-wide text-[var(--text-3)]">Cliente</p>
+            <p className="text-[10px] uppercase tracking-wide text-[var(--text-3)]">Paciente</p>
             <p className="text-[var(--text-1)] font-medium truncate">{appt.client?.name ?? '-'}</p>
           </div>
           <div>
@@ -84,20 +74,12 @@ function ViewingDetailsModal({ appt, onClose }: { appt: AppointmentWithDetails; 
             <p className="text-[var(--text-1)] font-medium truncate">{appt.client?.email ?? '-'}</p>
           </div>
           <div>
-            <p className="text-[10px] uppercase tracking-wide text-[var(--text-3)]">Presupuesto</p>
-            <p className="text-[var(--text-1)] font-medium truncate">{formatMoney(appt.client?.budget)}</p>
-          </div>
-          <div>
             <p className="text-[10px] uppercase tracking-wide text-[var(--text-3)]">Servicio</p>
             <p className="text-[var(--text-1)] font-medium truncate">{serviceLabel(appt)}</p>
           </div>
           <div>
             <p className="text-[10px] uppercase tracking-wide text-[var(--text-3)]">Pago</p>
             <p className="text-[var(--text-1)] font-medium truncate">{paymentLabel(appt.payment_status)}</p>
-          </div>
-          <div className="col-span-2">
-            <p className="text-[10px] uppercase tracking-wide text-[var(--text-3)]">No. de pre-aprobacion</p>
-            <p className="text-[var(--text-1)] font-medium truncate">{appt.client?.pre_approval_number ?? '-'}</p>
           </div>
         </div>
 
@@ -122,11 +104,9 @@ function ViewingDetailsModal({ appt, onClose }: { appt: AppointmentWithDetails; 
 export function ViewingsManager({
   initialAppointments,
   services,
-  listings,
 }: {
   initialAppointments: AppointmentWithDetails[]
   services: BusinessService[]
-  listings: Pick<Listing, 'id' | 'title' | 'listing_code' | 'status'>[]
 }) {
   const [appointments, setAppointments] = useState(initialAppointments)
   const [status, setStatus] = useState<string>('all')
@@ -143,7 +123,7 @@ export function ViewingsManager({
         if (status !== 'all' && a.status !== status) return false
         if (search) {
           const q = search.toLowerCase()
-          const haystack = `${a.client?.name ?? ''} ${a.client?.phone ?? ''} ${a.client?.email ?? ''} ${a.service?.name ?? ''} ${a.listing?.title ?? ''}`.toLowerCase()
+          const haystack = `${a.client?.name ?? ''} ${a.client?.phone ?? ''} ${a.client?.email ?? ''} ${a.service?.name ?? ''}`.toLowerCase()
           if (!haystack.includes(q)) return false
         }
         return true
@@ -245,7 +225,7 @@ export function ViewingsManager({
             <CalendarCheck className="w-4 h-4" />
           </span>
           <div>
-            <h1 className="font-display font-semibold text-xl text-[var(--text-1)]">Citas de propiedades</h1>
+            <h1 className="font-display font-semibold text-xl text-[var(--text-1)]">Citas</h1>
             <p className="text-sm text-[var(--text-3)]">
               {appointments.length} en total - {confirmedCount} confirmadas - {pendingCount} pendientes
             </p>
@@ -258,7 +238,7 @@ export function ViewingsManager({
         <label className="relative flex-1 min-w-[220px]">
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--text-4)]" />
           <input
-            placeholder="Buscar por nombre, telefono, correo, servicio o propiedad..."
+            placeholder="Buscar por nombre, telefono, correo o servicio..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="input-field pl-9"
@@ -276,8 +256,7 @@ export function ViewingsManager({
         <table className="w-full min-w-[980px] text-sm">
           <thead className="bg-[var(--teal-50)]/80 text-[10px] uppercase tracking-widest text-[var(--teal-800)]">
             <tr>
-              <th className="px-4 py-3 text-left font-bold">Cliente</th>
-              <th className="px-4 py-3 text-left font-bold">Presupuesto / Pre-aprobacion</th>
+              <th className="px-4 py-3 text-left font-bold">Paciente</th>
               <th className="px-4 py-3 text-left font-bold">Servicio</th>
               <th className="px-4 py-3 text-left font-bold">Fecha</th>
               <th className="px-4 py-3 text-left font-bold">Pago</th>
@@ -294,21 +273,14 @@ export function ViewingsManager({
                       {initials(appt.client?.name)}
                     </span>
                     <div className="min-w-0">
-                      <p className="font-semibold text-[var(--text-1)] truncate">{appt.client?.name ?? 'Cliente sin identificar'}</p>
+                      <p className="font-semibold text-[var(--text-1)] truncate">{appt.client?.name ?? 'Paciente sin identificar'}</p>
                       <p className="text-[11px] text-[var(--text-3)] truncate">{appt.client?.phone ?? '-'}</p>
                       <p className="text-[11px] text-[var(--text-4)] truncate">{appt.client?.email ?? '-'}</p>
                     </div>
                   </div>
                 </td>
                 <td className="px-4 py-3 text-xs text-[var(--text-2)]">
-                  <p>{appt.client?.budget ? `Presupuesto: ${formatMoney(appt.client.budget)}` : '-'}</p>
-                  {appt.client?.pre_approval_number && (
-                    <p className="mt-1 text-[var(--text-4)]">Pre-aprobacion: {appt.client.pre_approval_number}</p>
-                  )}
-                </td>
-                <td className="px-4 py-3 text-xs text-[var(--text-2)]">
                   <p className="font-medium text-[var(--text-1)]">{serviceLabel(appt)}</p>
-                  <p className="mt-1 text-[var(--text-4)] truncate max-w-[160px]">{listingLabel(appt)}</p>
                 </td>
                 <td className="px-4 py-3 text-xs text-[var(--text-2)] whitespace-nowrap">{formatDateTime(appt.scheduled_at)}</td>
                 <td className="px-4 py-3">
@@ -349,13 +321,11 @@ export function ViewingsManager({
                 {initials(appt.client?.name)}
               </span>
               <div className="min-w-0 flex-1">
-                <p className="font-semibold text-[var(--text-1)] truncate">{appt.client?.name ?? 'Cliente sin identificar'}</p>
+                <p className="font-semibold text-[var(--text-1)] truncate">{appt.client?.name ?? 'Paciente sin identificar'}</p>
                 <p className="text-xs text-[var(--text-3)] truncate">{appt.client?.phone ?? '-'} - {appt.client?.email ?? '-'}</p>
                 <div className="mt-2 grid grid-cols-2 gap-2 text-xs text-[var(--text-2)]">
                   <p><span className="text-[var(--text-4)]">Servicio:</span> {serviceLabel(appt)}</p>
-                  <p><span className="text-[var(--text-4)]">Presupuesto:</span> {formatMoney(appt.client?.budget)}</p>
                   <p className="col-span-2"><span className="text-[var(--text-4)]">Fecha:</span> {formatDateTime(appt.scheduled_at)}</p>
-                  <p className="col-span-2"><span className="text-[var(--text-4)]">Propiedad:</span> {listingLabel(appt)}</p>
                 </div>
                 <div className="mt-2 flex flex-wrap items-center gap-2">
                   <span className={`badge border-transparent ${PAYMENT_STYLES[appt.payment_status] ?? ''}`}>{paymentLabel(appt.payment_status)}</span>
@@ -393,7 +363,6 @@ export function ViewingsManager({
       {showForm && (
         <NewViewingModal
           services={services}
-          listings={listings}
           onCreated={(appointment) => {
             setAppointments((prev) => [appointment, ...prev])
             setShowForm(false)
