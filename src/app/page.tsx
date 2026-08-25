@@ -12,10 +12,30 @@ const STEPS = [
 ]
 
 const DEMO_PROGRAMS = [
-  { title: 'Rehab post-quirúrgica', price: 'Desde $65', city: 'Sesión individual' },
-  { title: 'Recuperación deportiva', price: 'Desde $75', city: 'Atletas y lesiones' },
-  { title: 'Terapia manual', price: 'Desde $60', city: 'Movilidad y dolor' },
-  { title: 'Plan de mantenimiento', price: 'Desde $50', city: 'Seguimiento mensual' },
+  {
+    title: 'Rehab post-quirúrgica',
+    price: 'Desde $65',
+    city: 'Sesión individual',
+    image: 'https://images.unsplash.com/photo-1649751361457-01d3a696c7e6?w=800&q=80&auto=format&fit=crop',
+  },
+  {
+    title: 'Recuperación deportiva',
+    price: 'Desde $75',
+    city: 'Atletas y lesiones',
+    image: 'https://images.unsplash.com/photo-1645005513713-9e2b92a687d3?w=800&q=80&auto=format&fit=crop',
+  },
+  {
+    title: 'Terapia manual',
+    price: 'Desde $60',
+    city: 'Movilidad y dolor',
+    image: 'https://images.unsplash.com/photo-1519824145371-296894a0daa9?w=800&q=80&auto=format&fit=crop',
+  },
+  {
+    title: 'Plan de mantenimiento',
+    price: 'Desde $50',
+    city: 'Seguimiento mensual',
+    image: 'https://images.unsplash.com/photo-1522898467493-49726bf28798?w=800&q=80&auto=format&fit=crop',
+  },
 ]
 
 export default function LandingPage() {
@@ -265,7 +285,10 @@ export default function LandingPage() {
           <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {DEMO_PROGRAMS.map((p) => (
               <div key={p.title} className="card-surface p-5">
-                <div className="aspect-video rounded-xl bg-[var(--teal-50)] mb-4" />
+                <div className="aspect-video rounded-xl bg-[var(--teal-50)] mb-4 overflow-hidden">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={p.image} alt={p.title} className="w-full h-full object-cover" loading="lazy" />
+                </div>
                 <p className="font-semibold text-[var(--text-1)]">{p.title}</p>
                 <p className="text-[var(--teal-700)] font-semibold mt-1">{p.price}</p>
                 <p className="text-xs text-[var(--text-3)] mt-1">{p.city}</p>
@@ -379,7 +402,7 @@ export default function LandingPage() {
             <a href="#features" className="hover:text-[var(--text-1)] transition-colors">Funciones</a>
             <a href="#pricing" className="hover:text-[var(--text-1)] transition-colors">Precios</a>
             <a
-              href="https://claude.ai/code/artifact/d48adc89-302b-4c4f-bf68-62d144944528"
+              href="https://claude.ai/code/artifact/ce2c0b7a-8667-4ca4-92b8-7ae75040061c"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-[var(--text-1)] transition-colors"
