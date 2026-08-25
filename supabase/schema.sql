@@ -51,6 +51,15 @@ returns boolean as $$
   );
 $$ language sql stable security definer;
 
+-- Alias for is_business_owner — there's no separate staff/team-membership
+-- table yet (one owner per business), so "has access" and "is the owner"
+-- are the same check today. Kept as its own function so policies that
+-- mean "any business member" don't need to change when that's added.
+create or replace function has_business_access(target_business_id uuid)
+returns boolean as $$
+  select is_business_owner(target_business_id);
+$$ language sql stable security definer;
+
 drop policy if exists "Owners can view their own business" on businesses;
 create policy "Owners can view their own business"
   on businesses for select using (owner_id = auth.uid());
@@ -1610,15 +1619,6 @@ alter table exercise_videos enable row level security;
 drop policy if exists "Business owners can manage exercise videos" on exercise_videos;
 create policy "Business owners can manage exercise videos"
   on exercise_videos for all using (is_business_owner(business_id));
-drop policy if exists "Patients can view videos assigned to them" on exercise_videos;
-create policy "Patients can view videos assigned to them"
-  on exercise_videos for select using (
-    exists (
-      select 1 from prescribed_exercises pe
-      join clients c on c.id = pe.client_id
-      where pe.exercise_video_id = id and c.auth_user_id = auth.uid()
-    )
-  );
 
 -- 52. PRESCRIBED EXERCISES — join: which exercise_videos a staff member has
 -- assigned to which patient, with sets/reps/frequency. Patients can read
@@ -1647,4 +1647,17 @@ drop policy if exists "Patients can view their own prescribed exercises" on pres
 create policy "Patients can view their own prescribed exercises"
   on prescribed_exercises for select using (
     exists (select 1 from clients c where c.id = client_id and c.auth_user_id = auth.uid())
+  );
+
+-- Deferred from section 51 above: this policy needs prescribed_exercises to
+-- exist first, since it checks whether the video was ever assigned to the
+-- patient making the request.
+drop policy if exists "Patients can view videos assigned to them" on exercise_videos;
+create policy "Patients can view videos assigned to them"
+  on exercise_videos for select using (
+    exists (
+      select 1 from prescribed_exercises pe
+      join clients c on c.id = pe.client_id
+      where pe.exercise_video_id = exercise_videos.id and c.auth_user_id = auth.uid()
+    )
   );
