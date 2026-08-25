@@ -62,8 +62,8 @@ export const appointmentSchema = z.object({
   clientName: z.string().min(1).optional(),
   clientPhone: z.string().optional(),
   clientEmail: z.string().email().optional().or(z.literal('')),
-  budget: z.coerce.number().nonnegative().optional(),
-  preApprovalNumber: z.string().optional(),
+  insuranceProvider: z.string().optional(),
+  referralSource: z.string().optional(),
   scheduledAt: z.string().datetime(),
   status: z.enum(['scheduled', 'pending_confirmation', 'completed', 'cancelled', 'no_show']).default('pending_confirmation'),
   notes: z.string().optional(),
@@ -103,7 +103,7 @@ export const websiteSchema = z.object({
   siteDescription: z.string().optional(),
   heroSubheadline: z.string().optional(),
   heroImageUrl: z.string().optional(),
-  ctaPrimaryText: z.string().default('Book a Viewing'),
+  ctaPrimaryText: z.string().default('Book Now'),
   ctaSecondaryText: z.string().default('Call Now'),
   yearsExperience: z.coerce.number().int().nonnegative().nullable().optional(),
   clientsServed: z.coerce.number().int().nonnegative().nullable().optional(),
@@ -221,7 +221,7 @@ export const publicBookingSchema = z.object({
   clientName: z.string().min(1, 'Name is required'),
   clientEmail: z.string().email('Invalid email'),
   clientPhone: z.string().optional(),
-  budget: z.string().optional(),
+  insuranceProvider: z.string().optional(),
   notes: z.string().optional(),
 })
 export type PublicBookingInput = z.infer<typeof publicBookingSchema>

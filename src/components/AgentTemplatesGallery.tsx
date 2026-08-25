@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Eye, Check, Home, Heart, Star, Building2, ClipboardList, Building, BarChart3, Sparkles, SearchX } from 'lucide-react'
+import { Eye, Check, Activity, Heart, Star, Stethoscope, Users, ShieldCheck, BarChart3, Sparkles, SearchX } from 'lucide-react'
 import {
   AGENT_TEMPLATES,
   AGENT_TEMPLATE_CATEGORIES,
@@ -10,12 +10,12 @@ import {
 } from '@/constants'
 
 const ICONS = {
-  home: Home,
+  activity: Activity,
   heart: Heart,
   star: Star,
-  building2: Building2,
-  'clipboard-list': ClipboardList,
-  building: Building,
+  stethoscope: Stethoscope,
+  users: Users,
+  'shield-check': ShieldCheck,
   'bar-chart-3': BarChart3,
 } as const
 

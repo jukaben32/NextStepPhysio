@@ -251,7 +251,7 @@ export async function sendNewAppointmentOwnerEmail(opts: {
     subject: `New appointment booked — ${opts.clientName}`,
     html: `
       <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto;">
-        <div style="background:#166534;color:#fff;padding:20px;border-radius:12px 12px 0 0;">
+        <div style="background:#1B5E6B;color:#fff;padding:20px;border-radius:12px 12px 0 0;">
           <p style="margin:0;font-size:18px;font-weight:600;">📅 New Appointment Booked</p>
           <p style="margin:4px 0 0;opacity:0.85;">${opts.businessName}</p>
         </div>
@@ -264,7 +264,7 @@ export async function sendNewAppointmentOwnerEmail(opts: {
             ${opts.clientPhone ? `<tr><td style="padding:6px 0;color:#6b7280;">Phone</td><td style="padding:6px 0;font-weight:600;">${opts.clientPhone}</td></tr>` : ''}
             ${opts.clientEmail ? `<tr><td style="padding:6px 0;color:#6b7280;">Email</td><td style="padding:6px 0;font-weight:600;">${opts.clientEmail}</td></tr>` : ''}
           </table>
-          <p style="margin-top:20px;"><a href="${process.env.NEXT_PUBLIC_APP_URL ?? ''}/dashboard/schedule" style="background:#166534;color:#fff;padding:10px 18px;border-radius:8px;text-decoration:none;font-weight:600;">View in Dashboard →</a></p>
+          <p style="margin-top:20px;"><a href="${process.env.NEXT_PUBLIC_APP_URL ?? ''}/dashboard/schedule" style="background:#1B5E6B;color:#fff;padding:10px 18px;border-radius:8px;text-decoration:none;font-weight:600;">View in Dashboard →</a></p>
         </div>
       </div>
     `,
@@ -286,7 +286,7 @@ export async function sendNewWebsiteLeadEmail(opts: {
     subject: `New website lead — ${opts.name || opts.email}`,
     html: `
       <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto;">
-        <div style="background:#166534;color:#fff;padding:20px;border-radius:12px 12px 0 0;">
+        <div style="background:#1B5E6B;color:#fff;padding:20px;border-radius:12px 12px 0 0;">
           <p style="margin:0;font-size:18px;font-weight:600;">📬 New Website Lead</p>
           <p style="margin:4px 0 0;opacity:0.85;">${opts.businessName}</p>
         </div>
@@ -314,7 +314,7 @@ export async function sendPublicBookingConfirmationEmail(opts: {
   businessName: string
   serviceName?: string
   scheduledAt: string
-  budget?: string
+  insuranceProvider?: string
   businessAddress?: string
   businessPhone?: string
   businessContactEmail?: string
@@ -323,25 +323,25 @@ export async function sendPublicBookingConfirmationEmail(opts: {
   const portalUrl = `${process.env.NEXT_PUBLIC_APP_URL ?? ''}/portal/${opts.appointmentId}`
   return sendEmail({
     to: opts.to,
-    subject: `Viewing Confirmed — ${opts.businessName}`,
+    subject: `Appointment Confirmed — ${opts.businessName}`,
     html: `
       <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto;">
-        <div style="background:#166534;color:#fff;padding:20px;border-radius:12px 12px 0 0;">
-          <p style="margin:0;font-size:18px;font-weight:600;">✓ Viewing Confirmed</p>
+        <div style="background:#1B5E6B;color:#fff;padding:20px;border-radius:12px 12px 0 0;">
+          <p style="margin:0;font-size:18px;font-weight:600;">✓ Appointment Confirmed</p>
           <p style="margin:4px 0 0;opacity:0.85;">${opts.businessName}</p>
         </div>
         <div style="border:1px solid #e5e7eb;border-top:none;border-radius:0 0 12px 12px;padding:20px;">
           <p>Hi ${opts.clientName},</p>
-          <p>Your ${opts.serviceName ?? 'viewing'} has been successfully booked. Here are your details:</p>
+          <p>Your ${opts.serviceName ?? 'appointment'} has been successfully booked. Here are your details:</p>
           <table style="width:100%;font-size:14px;border-collapse:collapse;">
             <tr><td style="padding:6px 0;color:#6b7280;">Date &amp; Time</td><td style="padding:6px 0;font-weight:600;">${formatEmailDateTime(opts.scheduledAt)}</td></tr>
-            ${opts.serviceName ? `<tr><td style="padding:6px 0;color:#6b7280;">Property / Service</td><td style="padding:6px 0;font-weight:600;">${opts.serviceName}</td></tr>` : ''}
-            ${opts.budget ? `<tr><td style="padding:6px 0;color:#6b7280;">Budget Range</td><td style="padding:6px 0;font-weight:600;">${opts.budget}</td></tr>` : ''}
-            ${opts.businessAddress ? `<tr><td style="padding:6px 0;color:#6b7280;">Agency Location</td><td style="padding:6px 0;font-weight:600;">${opts.businessAddress}</td></tr>` : ''}
+            ${opts.serviceName ? `<tr><td style="padding:6px 0;color:#6b7280;">Program</td><td style="padding:6px 0;font-weight:600;">${opts.serviceName}</td></tr>` : ''}
+            ${opts.insuranceProvider ? `<tr><td style="padding:6px 0;color:#6b7280;">Insurance Provider</td><td style="padding:6px 0;font-weight:600;">${opts.insuranceProvider}</td></tr>` : ''}
+            ${opts.businessAddress ? `<tr><td style="padding:6px 0;color:#6b7280;">Clinic Location</td><td style="padding:6px 0;font-weight:600;">${opts.businessAddress}</td></tr>` : ''}
             <tr><td style="padding:6px 0;color:#6b7280;">Contact</td><td style="padding:6px 0;font-weight:600;">${opts.businessPhone ?? ''} ${opts.businessContactEmail ? `· ${opts.businessContactEmail}` : ''}</td></tr>
           </table>
-          <p style="margin:16px 0;color:#6b7280;font-size:13px;">If you need to reschedule or cancel, please contact us at least 24 hours in advance. You can also manage your viewings through our client portal.</p>
-          <p><a href="${portalUrl}" style="background:#166534;color:#fff;padding:10px 18px;border-radius:8px;text-decoration:none;font-weight:600;">View in Client Portal →</a></p>
+          <p style="margin:16px 0;color:#6b7280;font-size:13px;">If you need to reschedule or cancel, please contact us at least 24 hours in advance. You can also manage your appointments through our patient portal.</p>
+          <p><a href="${portalUrl}" style="background:#1B5E6B;color:#fff;padding:10px 18px;border-radius:8px;text-decoration:none;font-weight:600;">View in Patient Portal →</a></p>
         </div>
       </div>
     `,

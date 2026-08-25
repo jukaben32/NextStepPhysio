@@ -29,7 +29,7 @@ function santoDomingoInstant(dateKey: string, hours: number, minutes: number): D
 }
 
 type AppointmentJoinRow = Appointment & {
-  clients: Pick<Client, 'id' | 'name' | 'phone' | 'email' | 'budget' | 'pre_approval_number'> | null
+  clients: Pick<Client, 'id' | 'name' | 'phone' | 'email' | 'insurance_provider' | 'referral_source'> | null
   business_services: Pick<BusinessService, 'id' | 'name' | 'price' | 'duration_minutes'> | null
 }
 
@@ -48,7 +48,7 @@ export async function listAppointmentsForBusiness(
 ): Promise<AppointmentWithDetails[]> {
   let query = supabase
     .from('appointments')
-    .select('*, clients(id, name, phone, email, budget, pre_approval_number), business_services(id, name, price, duration_minutes)')
+    .select('*, clients(id, name, phone, email, insurance_provider, referral_source), business_services(id, name, price, duration_minutes)')
     .eq('business_id', businessId)
     .order('scheduled_at', { ascending: false })
 
@@ -68,7 +68,7 @@ export async function getAppointmentWithDetails(
 ): Promise<AppointmentWithDetails | null> {
   const { data, error } = await supabase
     .from('appointments')
-    .select('*, clients(id, name, phone, email, budget, pre_approval_number), business_services(id, name, price, duration_minutes)')
+    .select('*, clients(id, name, phone, email, insurance_provider, referral_source), business_services(id, name, price, duration_minutes)')
     .eq('business_id', businessId)
     .eq('id', appointmentId)
     .maybeSingle()
@@ -88,7 +88,7 @@ export async function getAppointmentPublic(
   const { data, error } = await supabase
     .from('appointments')
     .select(
-      '*, clients(id, name, phone, email, budget, pre_approval_number), business_services(id, name, price, duration_minutes), businesses(name, phone, contact_email, address)'
+      '*, clients(id, name, phone, email, insurance_provider, referral_source), business_services(id, name, price, duration_minutes), businesses(name, phone, contact_email, address)'
     )
     .eq('id', appointmentId)
     .maybeSingle()

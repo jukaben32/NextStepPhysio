@@ -5,17 +5,17 @@ import Link from 'next/link'
 import { PLAN_LIMITS } from '@/constants'
 
 const STEPS = [
-  { n: '01', title: 'Conecta', body: 'Enlaza tus propiedades y tu agenda en minutos. Sin instalaciones.' },
-  { n: '02', title: 'Tu agente llama', body: 'Tu agente IA contacta y cualifica leads 24/7 con voz natural.' },
-  { n: '03', title: 'Agenda citas', body: 'Reserva en tu calendario y confirma al cliente automáticamente.' },
-  { n: '04', title: 'Cierra tú', body: 'Recibe el pipeline organizado y enfócate solo en cerrar la venta.' },
+  { n: '01', title: 'Conecta', body: 'Enlaza tus programas y tu agenda en minutos. Sin instalaciones.' },
+  { n: '02', title: 'Tu agente responde', body: 'Tu agente IA atiende y orienta a pacientes 24/7 con voz natural.' },
+  { n: '03', title: 'Agenda citas', body: 'Reserva en tu calendario y confirma al paciente automáticamente.' },
+  { n: '04', title: 'Trata tú', body: 'Recibe la agenda organizada y enfócate solo en la recuperación del paciente.' },
 ]
 
-const DEMO_PROPERTIES = [
-  { title: 'Casa 3 hab. · Gazcue', price: '$189,000', city: 'Santo Domingo' },
-  { title: 'Apartamento · Piantini', price: '$245,000', city: 'Santo Domingo' },
-  { title: 'Villa · Punta Cana', price: '$520,000', city: 'La Altagracia' },
-  { title: 'Local · Bella Vista', price: '$310,000', city: 'Santo Domingo' },
+const DEMO_PROGRAMS = [
+  { title: 'Rehab post-quirúrgica', price: 'Desde $65', city: 'Sesión individual' },
+  { title: 'Recuperación deportiva', price: 'Desde $75', city: 'Atletas y lesiones' },
+  { title: 'Terapia manual', price: 'Desde $60', city: 'Movilidad y dolor' },
+  { title: 'Plan de mantenimiento', price: 'Desde $50', city: 'Seguimiento mensual' },
 ]
 
 export default function LandingPage() {
@@ -39,7 +39,7 @@ export default function LandingPage() {
           <div className="hidden md:flex items-center gap-8 text-sm font-medium">
             <a href="#features" className="hover:text-[var(--teal-700)] transition-colors">Funciones</a>
             <a href="#how" className="hover:text-[var(--teal-700)] transition-colors">Cómo funciona</a>
-            <a href="#properties" className="hover:text-[var(--teal-700)] transition-colors">Propiedades</a>
+            <a href="#properties" className="hover:text-[var(--teal-700)] transition-colors">Programas</a>
             <a href="#pricing" className="hover:text-[var(--teal-700)] transition-colors">Precios</a>
           </div>
 
@@ -68,7 +68,7 @@ export default function LandingPage() {
             <div className="px-5 py-4 flex flex-col gap-3 text-sm font-medium">
               <a href="#features" onClick={() => setMenuOpen(false)} className="py-2">Funciones</a>
               <a href="#how" onClick={() => setMenuOpen(false)} className="py-2">Cómo funciona</a>
-              <a href="#properties" onClick={() => setMenuOpen(false)} className="py-2">Propiedades</a>
+              <a href="#properties" onClick={() => setMenuOpen(false)} className="py-2">Programas</a>
               <a href="#pricing" onClick={() => setMenuOpen(false)} className="py-2">Precios</a>
               <hr className="border-[var(--border)]" />
               <Link href="/login" className="py-2">Iniciar sesión</Link>
@@ -85,14 +85,14 @@ export default function LandingPage() {
         <div className="relative max-w-7xl mx-auto px-5 sm:px-8 grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
           <div className="animate-fade-up">
             <p className="text-xs font-semibold uppercase tracking-widest text-[var(--teal-700)]">
-              Agente de llamadas con IA
+              Agente de voz con IA para clínicas de rehabilitación
             </p>
             <h1 className="mt-4 font-display font-semibold text-[var(--text-1)] text-4xl sm:text-5xl lg:text-6xl leading-[1.05] tracking-tight">
-              Tu equipo de ventas <span className="italic text-[var(--teal-700)]">nunca duerme.</span>
+              Tu clínica <span className="italic text-[var(--teal-700)]">nunca deja de atender.</span>
             </h1>
             <p className="mt-6 text-lg text-[var(--text-2)] max-w-xl">
-              NextStep Physio llama, cualifica y agenda citas por ti con un agente de voz natural
-              disponible 24/7. Tú te enfocas en cerrar la venta; nosotros hacemos el seguimiento.
+              NextStep Physio responde, orienta y agenda citas por ti con un agente de voz natural
+              disponible 24/7. Tú te enfocas en la recuperación del paciente; nosotros hacemos el seguimiento.
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3">
@@ -131,11 +131,11 @@ export default function LandingPage() {
               <div className="mt-5 space-y-3 text-sm">
                 <div className="bg-[var(--bg-raised)] rounded-2xl rounded-tl-sm p-3 max-w-[85%]">
                   <p className="text-xs text-[var(--text-3)] mb-0.5">Alexis</p>
-                  Hola María, soy Alexis de Bienes &amp; Co. ¿Le interesa la casa de 3 hab. en Gazcue?
+                  Hola María, soy Alexis de NextStep Physio. ¿Cómo va la recuperación de tu rodilla?
                 </div>
                 <div className="bg-[var(--teal-50)] rounded-2xl rounded-tr-sm p-3 max-w-[85%] ml-auto text-[var(--text-2)]">
                   <p className="text-xs text-[var(--teal-800)] mb-0.5">María R.</p>
-                  ¡Sí! Me gustaría verla este jueves.
+                  Mejor, pero me gustaría agendar mi siguiente sesión de terapia manual.
                 </div>
                 <div className="bg-[var(--bg-raised)] rounded-2xl rounded-tl-sm p-3 max-w-[85%]">
                   <p className="text-xs text-[var(--text-3)] mb-0.5">Alexis</p>
@@ -149,7 +149,7 @@ export default function LandingPage() {
                 </svg>
                 <div className="text-xs leading-tight">
                   <p className="font-semibold">Cita agendada</p>
-                  <p className="opacity-90">Jue 17 jul · 4:00 PM · Visita Gazcue</p>
+                  <p className="opacity-90">Jue 17 jul · 4:00 PM · Terapia manual</p>
                 </div>
               </div>
             </div>
@@ -175,7 +175,7 @@ export default function LandingPage() {
           <div className="max-w-2xl">
             <p className="text-xs font-semibold uppercase tracking-widest text-[var(--teal-700)]">Cómo funciona</p>
             <h2 className="mt-3 font-display font-semibold text-[var(--text-1)] text-3xl sm:text-4xl tracking-tight">
-              De la lista de leads a la cita, sin marcar un número tú mismo.
+              De la primera llamada a la cita, sin que nadie de tu equipo levante el teléfono.
             </h2>
           </div>
 
@@ -197,22 +197,22 @@ export default function LandingPage() {
           <div className="max-w-2xl">
             <p className="text-xs font-semibold uppercase tracking-widest text-[var(--teal-700)]">Funciones</p>
             <h2 className="mt-3 font-display font-semibold text-[var(--text-1)] text-3xl sm:text-4xl tracking-tight">
-              Un asistente telefónico que también piensa.
+              Un asistente de clínica que también piensa.
             </h2>
           </div>
 
           <div className="mt-12 grid lg:grid-cols-3 gap-5">
             <div className="lg:col-span-2 bg-[var(--teal-900)] text-[var(--bg-page)] rounded-3xl p-8 sm:p-10 relative overflow-hidden">
               <div className="absolute -bottom-16 -right-10 w-64 h-64 rounded-full bg-[var(--teal-700)]/30 blur-2xl" />
-              <h3 className="font-display text-2xl sm:text-3xl font-semibold">Llamadas humanas, a escala</h3>
+              <h3 className="font-display text-2xl sm:text-3xl font-semibold">Atención humana, a escala</h3>
               <p className="mt-3 text-[var(--bg-page)]/75 max-w-md">
                 Voz natural con entonación real, en español e inglés. Tu agente mantiene una conversación
-                fluida, responde dudas y detecta intención de compra sin sonar a robot.
+                fluida, responde dudas sobre programas y nunca da un diagnóstico por su cuenta.
               </p>
               <ul className="mt-6 space-y-2 text-sm text-[var(--bg-page)]/85">
-                <li className="flex items-center gap-2"><span className="text-[var(--teal-400)]">✓</span> Cualificación de lead con score de intención</li>
-                <li className="flex items-center gap-2"><span className="text-[var(--teal-400)]">✓</span> Manejo de objeciones y preguntas frecuentes</li>
-                <li className="flex items-center gap-2"><span className="text-[var(--teal-400)]">✓</span> Llamadas ilimitadas en horario del lead</li>
+                <li className="flex items-center gap-2"><span className="text-[var(--teal-400)]">✓</span> Orientación sobre programas y tratamientos</li>
+                <li className="flex items-center gap-2"><span className="text-[var(--teal-400)]">✓</span> Manejo de dudas y preguntas frecuentes</li>
+                <li className="flex items-center gap-2"><span className="text-[var(--teal-400)]">✓</span> Disponible las 24 horas, todos los días</li>
               </ul>
             </div>
 
@@ -224,23 +224,23 @@ export default function LandingPage() {
               <div className="mt-6 bg-white rounded-2xl p-4 text-sm shadow-sm">
                 <p className="text-[var(--text-3)] text-xs">Próxima cita</p>
                 <p className="font-semibold text-[var(--text-1)] mt-1">Jue 17 jul · 4:00 PM</p>
-                <p className="text-[var(--teal-700)] text-xs mt-0.5">Visita · Gazcue</p>
+                <p className="text-[var(--teal-700)] text-xs mt-0.5">Terapia manual</p>
               </div>
             </div>
 
             <div className="lg:col-span-3 card-surface p-8 sm:p-10 grid sm:grid-cols-3 gap-8 items-center">
               <div className="sm:col-span-1">
-                <h3 className="font-display text-xl font-semibold text-[var(--text-1)]">Sigue todo el pipeline</h3>
-                <p className="mt-2 text-sm text-[var(--text-3)]">Cada llamada, cliente y cita queda registrado y accesible.</p>
+                <h3 className="font-display text-xl font-semibold text-[var(--text-1)]">Progreso siempre visible</h3>
+                <p className="mt-2 text-sm text-[var(--text-3)]">Dolor, movilidad y ejercicios prescritos, en un solo lugar por paciente.</p>
               </div>
               <div className="sm:col-span-2 grid grid-cols-3 gap-4 text-center">
                 <div className="rounded-2xl bg-[var(--bg-raised)] py-5">
-                  <p className="font-display text-2xl text-[var(--teal-700)]">Llamadas</p>
-                  <p className="text-xs text-[var(--text-3)] mt-1">Registro completo</p>
+                  <p className="font-display text-2xl text-[var(--teal-700)]">Progreso</p>
+                  <p className="text-xs text-[var(--text-3)] mt-1">Dolor y movilidad</p>
                 </div>
                 <div className="rounded-2xl bg-[var(--bg-raised)] py-5">
-                  <p className="font-display text-2xl text-[var(--teal-700)]">Clientes</p>
-                  <p className="text-xs text-[var(--text-3)] mt-1">Base de leads</p>
+                  <p className="font-display text-2xl text-[var(--teal-700)]">Ejercicios</p>
+                  <p className="text-xs text-[var(--text-3)] mt-1">Videos prescritos</p>
                 </div>
                 <div className="rounded-2xl bg-[var(--bg-raised)] py-5">
                   <p className="font-display text-2xl text-[var(--teal-700)]">Citas</p>
@@ -252,18 +252,18 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Propiedades */}
+      {/* Programas */}
       <section id="properties" className="py-16 sm:py-24 bg-[var(--bg-raised)]">
         <div className="max-w-7xl mx-auto px-5 sm:px-8">
           <div className="max-w-2xl">
-            <p className="text-xs font-semibold uppercase tracking-widest text-[var(--teal-700)]">Propiedades</p>
+            <p className="text-xs font-semibold uppercase tracking-widest text-[var(--teal-700)]">Programas</p>
             <h2 className="mt-3 font-display font-semibold text-[var(--text-1)] text-3xl sm:text-4xl tracking-tight">
               Lo que tu agente presenta en cada llamada.
             </h2>
           </div>
 
           <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {DEMO_PROPERTIES.map((p) => (
+            {DEMO_PROGRAMS.map((p) => (
               <div key={p.title} className="card-surface p-5">
                 <div className="aspect-video rounded-xl bg-[var(--teal-50)] mb-4" />
                 <p className="font-semibold text-[var(--text-1)]">{p.title}</p>
@@ -281,7 +281,7 @@ export default function LandingPage() {
           <div className="max-w-2xl mx-auto text-center">
             <p className="text-xs font-semibold uppercase tracking-widest text-[var(--teal-700)]">Precios</p>
             <h2 className="mt-3 font-display font-semibold text-[var(--text-1)] text-3xl sm:text-4xl tracking-tight">
-              Planes que crecen con tu cartera.
+              Planes que crecen con tu clínica.
             </h2>
             <p className="mt-3 text-[var(--text-3)]">Sin permanencia. Empieza gratis y paga solo cuando escales.</p>
           </div>
@@ -346,17 +346,17 @@ export default function LandingPage() {
           <div className="bg-[var(--teal-700)] rounded-3xl px-7 py-12 sm:px-14 sm:py-16 text-center text-white relative overflow-hidden">
             <div className="absolute -top-20 -left-10 w-72 h-72 rounded-full bg-white/10 blur-2xl" />
             <h2 className="relative font-display font-semibold text-3xl sm:text-4xl tracking-tight">
-              Cierra más con menos trabajo.
+              Atiende más pacientes con menos trabajo.
             </h2>
             <p className="relative mt-3 text-white/85 max-w-xl mx-auto">
-              Deja que tu agente IA llame, cualifique y agende. Tú solo tienes que aparecer a la cita.
+              Deja que tu agente IA responda, oriente y agende. Tú solo tienes que aparecer a la sesión.
             </p>
             <div className="relative mt-8 flex flex-wrap justify-center gap-3">
               <Link href="/signup" className="text-sm font-semibold bg-white text-[var(--teal-700)] px-6 py-3 rounded-full hover:bg-[var(--bg-page)] transition-colors">
                 Empezar gratis
               </Link>
               <a href="#properties" className="text-sm font-semibold text-white border border-white/40 px-6 py-3 rounded-full hover:bg-white/10 transition-colors">
-                Ver propiedades
+                Ver programas
               </a>
             </div>
           </div>
@@ -374,7 +374,7 @@ export default function LandingPage() {
               <span className="text-[var(--teal-700)]">NextStep</span> Physio
             </span>
           </div>
-          <p>© 2026 NextStep Physio. Hecho para inmobiliarias.</p>
+          <p>© 2026 NextStep Physio. Hecho para clínicas de rehabilitación.</p>
           <div className="flex gap-5">
             <a href="#features" className="hover:text-[var(--text-1)] transition-colors">Funciones</a>
             <a href="#pricing" className="hover:text-[var(--text-1)] transition-colors">Precios</a>

@@ -70,7 +70,7 @@ function DocumentFormModal({
             value={values.title}
             onChange={(e) => setValues({ ...values, title: e.target.value })}
             className="input-field w-full mt-1"
-            placeholder="¿Qué es CONFOTUR?"
+            placeholder="¿Qué licencia necesita un fisioterapeuta?"
             required
           />
         </div>

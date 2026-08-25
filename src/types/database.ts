@@ -445,8 +445,8 @@ export interface Database {
           name: string
           phone: string | null
           email: string | null
-          budget: number | null
-          pre_approval_number: string | null
+          insurance_provider: string | null
+          referral_source: string | null
           source: 'ai_call' | 'widget_chat' | 'manual' | 'website_form' | 'whatsapp'
           notes: string | null
           created_at: string

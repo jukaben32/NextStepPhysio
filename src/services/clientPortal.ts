@@ -13,7 +13,7 @@ type DB = SupabaseClient<Database>
 // column-level restriction). Ownership is checked in application code instead.
 
 type AppointmentJoinRow = Appointment & {
-  clients: { id: string; name: string; phone: string | null; email: string | null; budget: number | null; pre_approval_number: string | null } | null
+  clients: { id: string; name: string; phone: string | null; email: string | null; insurance_provider: string | null; referral_source: string | null } | null
   business_services: { id: string; name: string; price: number | null; duration_minutes: number } | null
   businesses: { id: string; name: string; phone: string | null; contact_email: string | null; stripe_connected: boolean } | null
 }
@@ -29,7 +29,7 @@ function mapPortalAppointment(row: AppointmentJoinRow): PortalAppointment {
 }
 
 const PORTAL_APPOINTMENT_SELECT =
-  '*, clients(id, name, phone, email, budget, pre_approval_number), business_services(id, name, price, duration_minutes), businesses(id, name, phone, contact_email, stripe_connected)'
+  '*, clients(id, name, phone, email, insurance_provider, referral_source), business_services(id, name, price, duration_minutes), businesses(id, name, phone, contact_email, stripe_connected)'
 
 // A person can be a `clients` row in more than one business (booked with
 // two different agencies) — each is a separate row with its own id, all

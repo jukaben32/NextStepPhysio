@@ -55,17 +55,17 @@ export default async function ClientPortalPage(props: { params: Promise<{ appoin
               <div className="flex items-start gap-3">
                 <MapPin className="w-4 h-4 mt-0.5 text-[var(--teal-700)]" />
                 <div>
-                  <p className="text-[var(--text-3)] text-xs">Property / Service</p>
+                  <p className="text-[var(--text-3)] text-xs">Program</p>
                   <p className="font-medium text-[var(--text-1)]">{appointment.service.name}</p>
                 </div>
               </div>
             )}
-            {appointment.client?.budget && (
+            {appointment.client?.insurance_provider && (
               <div className="flex items-start gap-3">
                 <Wallet className="w-4 h-4 mt-0.5 text-[var(--teal-700)]" />
                 <div>
-                  <p className="text-[var(--text-3)] text-xs">Budget Range</p>
-                  <p className="font-medium text-[var(--text-1)]">${appointment.client.budget.toLocaleString()}</p>
+                  <p className="text-[var(--text-3)] text-xs">Insurance Provider</p>
+                  <p className="font-medium text-[var(--text-1)]">{appointment.client.insurance_provider}</p>
                 </div>
               </div>
             )}

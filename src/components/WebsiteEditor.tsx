@@ -23,11 +23,10 @@ import {
   Phone,
   PanelBottom,
   Globe,
-  Home,
-  ClipboardList,
-  TrendingUp,
-  Building2,
-  Key,
+  Activity,
+  HeartPulse,
+  Stethoscope,
+  Dumbbell,
   Share2,
 } from 'lucide-react'
 import type { Business, AiAgent, WebsiteContent } from '@/types'
@@ -39,11 +38,11 @@ import { SOCIAL_PLATFORMS } from './socialLinks'
 // icon set, keyed so the choice survives a save/reload instead of being
 // re-derived from array position.
 const SERVICE_ICON_OPTIONS = [
-  { key: 'home', label: 'Home', Icon: Home },
-  { key: 'clipboard', label: 'Listing', Icon: ClipboardList },
-  { key: 'trending', label: 'Analysis', Icon: TrendingUp },
-  { key: 'building', label: 'Building', Icon: Building2 },
-  { key: 'key', label: 'Key', Icon: Key },
+  { key: 'activity', label: 'Activity', Icon: Activity },
+  { key: 'heartpulse', label: 'Recovery', Icon: HeartPulse },
+  { key: 'stethoscope', label: 'Assessment', Icon: Stethoscope },
+  { key: 'users', label: 'Group', Icon: UsersRound },
+  { key: 'dumbbell', label: 'Exercise', Icon: Dumbbell },
 ] as const
 
 const TEMPLATES = [
@@ -863,7 +862,7 @@ export function WebsiteEditor({
                   value={form.headline}
                   onChange={(e) => patch({ headline: e.target.value })}
                   className="input-field h-8 w-full !rounded-lg !px-2.5 !py-1 text-xs"
-                  placeholder="Premium Real Estate, Exceptional Service"
+                  placeholder="Expert Rehab, Faster Recovery"
                 />
               </Field>
 
@@ -995,7 +994,7 @@ export function WebsiteEditor({
                 value={form.aboutTitle}
                 onChange={(e) => patch({ aboutTitle: e.target.value })}
                 className="input-field w-full"
-                placeholder="Dedicated to Finding Your Dream Property"
+                placeholder="Dedicated to Your Full Recovery"
               />
             </Field>
             <Field label="Mission">
@@ -1059,7 +1058,7 @@ export function WebsiteEditor({
                 onChange={(e) => patch({ trustBadgesText: e.target.value })}
                 className="input-field w-full"
                 rows={4}
-                placeholder={'Licensed Real Estate Agents\nAccepting New Clients\nVirtual Viewings Available\nFree Market Analysis'}
+                placeholder={'Licensed Physical Therapists\nAccepting New Patients\nSports & Post-Surgical Recovery\nFree Initial Assessment'}
               />
             </Field>
           </Section>
@@ -1141,7 +1140,7 @@ export function WebsiteEditor({
               onClick={() =>
                 setWebsiteServices((cur) => [
                   ...cur,
-                  { icon: 'home', name: '', description: '', duration: '', price: '', sortOrder: cur.length },
+                  { icon: 'activity', name: '', description: '', duration: '', price: '', sortOrder: cur.length },
                 ])
               }
               className="btn-secondary w-full !text-xs"

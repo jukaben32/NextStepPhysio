@@ -32,7 +32,7 @@ export async function POST(request: Request, props: { params: Promise<{ business
     name: input.clientName,
     phone: input.clientPhone,
     email: input.clientEmail,
-    budget: input.budget ? Number(input.budget.replace(/[^0-9.]/g, '')) || undefined : undefined,
+    insuranceProvider: input.insuranceProvider,
     source: 'website_form',
   })
 
@@ -60,6 +60,7 @@ export async function POST(request: Request, props: { params: Promise<{ business
       businessName: business.name,
       serviceName: service?.name,
       scheduledAt: appointment.scheduled_at,
+      insuranceProvider: input.insuranceProvider,
       businessAddress: business.address ?? undefined,
       businessPhone: business.phone ?? undefined,
       businessContactEmail: business.contact_email ?? undefined,

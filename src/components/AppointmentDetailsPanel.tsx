@@ -1,6 +1,6 @@
 'use client'
 
-import { User, Phone, Mail, DollarSign, CalendarClock, Clock3, Tag, StickyNote, X } from 'lucide-react'
+import { User, Phone, Mail, ShieldCheck, CalendarClock, Clock3, Tag, StickyNote, X } from 'lucide-react'
 import type { AppointmentWithDetails } from '@/types'
 import { formatDateTime } from '@/lib/formatDate'
 import {
@@ -83,13 +83,13 @@ export function AppointmentDetailsPanel({
 
           <section>
             <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-3)] mb-2">
-              Financiamiento
+              Seguro médico
             </p>
             <div className="card-surface p-3.5">
               <InfoRow
-                icon={DollarSign}
-                label="Presupuesto"
-                value={appt.client?.budget ? `$${appt.client.budget.toLocaleString()}` : '—'}
+                icon={ShieldCheck}
+                label="Aseguradora"
+                value={appt.client?.insurance_provider ?? '—'}
               />
             </div>
           </section>

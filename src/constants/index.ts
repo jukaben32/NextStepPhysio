@@ -46,87 +46,22 @@ export const WEBSITE_BUILDER_FEATURES = [
 ] as const
 
 // Seeded into website_specialties the first time a business opens the
-// builder's Partners & Lenders panel with nothing in it yet — matches the
-// reference template's starting content instead of leaving new sites with
-// an empty, unlabeled "+ Add Insurance" button and no sense of what goes
+// builder's specialties panel with nothing in it yet, so new sites don't
+// start with an empty, unlabeled "+ Add" button and no sense of what goes
 // there. Owners are free to edit or delete every one of these afterward.
 export const DEFAULT_WEBSITE_SPECIALTIES = [
-  'Residential Sales',
-  'Commercial Leasing',
-  'Property Management',
-  'Investment Properties',
-  'New Construction',
-  'Luxury Estates',
+  'Post-Surgical Rehab',
+  'Sports Injury Recovery',
+  'Manual Therapy',
+  'Strength & Mobility',
+  'Pain Management',
+  'Injury Prevention',
 ] as const
 
 // 0 means "unlimited" in the env contract.
 export function isWithinLimit(used: number, limit: number): boolean {
   return limit === 0 || used < limit
 }
-
-export const PROPERTY_TYPES = [
-  { value: 'house', label: 'House' },
-  { value: 'apartment', label: 'Apartment' },
-  { value: 'townhouse', label: 'Townhouse' },
-  { value: 'commercial', label: 'Commercial' },
-  { value: 'condo', label: 'Condo' },
-  { value: 'land', label: 'Land' },
-  { value: 'industrial', label: 'Industrial' },
-  { value: 'other', label: 'Other' },
-] as const
-
-export const LISTING_STATUSES = [
-  { value: 'available', label: 'Available', color: 'green' },
-  { value: 'pending', label: 'Pending', color: 'amber' },
-  { value: 'sold', label: 'Sold', color: 'slate' },
-  { value: 'rented', label: 'Rented', color: 'blue' },
-  { value: 'withdrawn', label: 'Withdrawn', color: 'red' },
-] as const
-
-// Most Dominican Republic real estate inventory is quoted in USD even
-// though the local currency is DOP — price alone was ambiguous without this.
-export const CURRENCIES = [
-  { value: 'USD', label: 'USD ($)' },
-  { value: 'DOP', label: 'DOP (RD$)' },
-] as const
-
-export const PRICE_DISPLAY_OPTIONS = [
-  { value: 'fixed', label: 'Precio fijo' },
-  { value: 'negotiable', label: 'Negociable' },
-  { value: 'starting_at', label: 'Desde' },
-  { value: 'contact', label: 'Consultar precio' },
-] as const
-
-export const LISTING_TYPES = [
-  { value: 'sale', label: 'For Sale' },
-  { value: 'rent', label: 'For Rent' },
-  { value: 'vacation_rental', label: 'Vacation Rental' },
-] as const
-
-export const RENTAL_PERIODS = [
-  { value: 'night', label: 'Por noche' },
-  { value: 'week', label: 'Por semana' },
-  { value: 'month', label: 'Por mes' },
-] as const
-
-export const AMENITIES = [
-  'Pool',
-  'Garage',
-  'Garden',
-  'Balcony',
-  'Fireplace',
-  'Air Conditioning',
-  'Pet Friendly',
-  'Gym',
-  'Elevator',
-  'Security System',
-  'Laundry',
-  'Storage',
-  'Solar Panels',
-  'Smart Home',
-  'Sea View',
-  'City View',
-] as const
 
 // Voices supported by the OpenAI Realtime API.
 export const AGENT_VOICES = [
@@ -257,7 +192,7 @@ export interface AgentTemplate {
   name: string
   role: string
   badge: string
-  icon: 'home' | 'heart' | 'star' | 'building2' | 'clipboard-list' | 'building' | 'bar-chart-3'
+  icon: 'activity' | 'heart' | 'star' | 'stethoscope' | 'users' | 'shield-check' | 'bar-chart-3'
   accent: AgentTemplateAccent
   category: string
   features: string[]
@@ -329,142 +264,142 @@ export const AGENT_TEMPLATE_ACCENT_STYLES: Record<
 }
 
 export const AGENT_TEMPLATE_CATEGORIES = [
-  'Compra y venta residencial',
-  'Experiencia y seguimiento de compradores',
-  'Propiedades de lujo y premium',
-  'Rentas residenciales y comerciales',
-  'Representación de vendedores y listados',
-  'Propiedades comerciales y de inversión',
+  'Citas y atención general',
+  'Experiencia y seguimiento de pacientes',
+  'Recuperación deportiva y alto rendimiento',
+  'Rehabilitación post-quirúrgica',
+  'Coordinación de nuevos pacientes',
+  'Seguros y programas clínicos',
 ] as const
 
 export const AGENT_TEMPLATES: AgentTemplate[] = [
   {
     id: 'alexis',
     name: 'Alexis',
-    role: 'Agente de Ventas Residencial',
+    role: 'Recepcionista de Citas',
     badge: 'Más popular',
-    icon: 'home',
+    icon: 'activity',
     accent: 'emerald',
-    category: 'Compra y venta residencial',
-    features: ['Agendar visitas a propiedades', 'Agendar consultas con compradores', 'Consultas sobre listados'],
-    bestFor: 'Agencias residenciales, representación de compradores',
+    category: 'Citas y atención general',
+    features: ['Agendar citas', 'Responder sobre programas y precios', 'Confirmaciones y recordatorios'],
+    bestFor: 'Clínicas de cualquier tamaño, primer agente de la clínica',
     voice: 'sage',
     personality: 'professional',
     personalityLabel: 'Profesional',
     sensitivity: 0.5,
-    greetingMessage: '¡Hola! Gracias por llamar. Soy Alexis, ¿en qué propiedad estás interesado hoy?',
+    greetingMessage: '¡Hola! Gracias por llamar. Soy Alexis, ¿en qué programa estás interesado hoy?',
     systemPrompt:
-      'Eres Alexis, un agente de ventas residencial profesional y directo. Ayuda a los compradores a encontrar propiedades, agenda visitas y captura sus datos de contacto.',
+      'Eres Alexis, una recepcionista profesional y directa de una clínica de rehabilitación física. Ayuda a los pacientes a elegir programa, agenda citas y captura sus datos de contacto. Nunca diagnosticas ni das consejo médico específico.',
   },
   {
     id: 'grace',
     name: 'Grace',
-    role: 'Coordinadora de Relaciones con Clientes',
-    badge: 'Favorito de clientes',
+    role: 'Coordinadora de Experiencia del Paciente',
+    badge: 'Favorito de pacientes',
     icon: 'heart',
     accent: 'gold',
-    category: 'Experiencia y seguimiento de compradores',
-    features: ['Soporte cálido al cliente', 'Seguimiento post-visita', 'Orientación de zona'],
-    bestFor: 'Agencias de compradores, especialistas en reubicación',
+    category: 'Experiencia y seguimiento de pacientes',
+    features: ['Soporte cálido al paciente', 'Seguimiento post-sesión', 'Orientación sobre el proceso'],
+    bestFor: 'Clínicas enfocadas en pacientes frecuentes y adherencia al tratamiento',
     voice: 'shimmer',
     personality: 'friendly',
     personalityLabel: 'Amigable',
     sensitivity: 0.8,
     greetingMessage:
-      '¡Hola! Gracias por llamar. Soy Grace, tu concierge inmobiliaria. Estoy aquí para que encontrar tu propiedad ideal sea lo más fácil posible.',
+      '¡Hola! Gracias por llamar. Soy Grace, tu asistente de la clínica. Estoy aquí para que agendar tu próxima sesión sea lo más fácil posible.',
     systemPrompt:
-      'Eres Grace, una concierge de clientes cálida y cercana para una agencia inmobiliaria. Haces que los compradores se sientan cómodos y acompañados en su proceso.',
+      'Eres Grace, una asistente cálida y cercana para una clínica de rehabilitación física. Haces que los pacientes se sientan cómodos y acompañados en su proceso de recuperación. Nunca diagnosticas ni das consejo médico específico.',
   },
   {
     id: 'maxwell',
     name: 'Maxwell',
-    role: 'Especialista en Propiedades de Lujo',
-    badge: 'Agencias premium',
+    role: 'Especialista en Recuperación Deportiva',
+    badge: 'Clínicas premium',
     icon: 'star',
     accent: 'ink',
-    category: 'Propiedades de lujo y premium',
-    features: ['Consultas privadas de exhibición', 'Servicio privado al cliente', 'Resúmenes de inversión'],
-    bestFor: 'Agencias de lujo, especialistas en bienes raíces premium',
+    category: 'Recuperación deportiva y alto rendimiento',
+    features: ['Consultas de recuperación para atletas', 'Atención personalizada', 'Resúmenes de progreso'],
+    bestFor: 'Clínicas boutique, atención a atletas de alto rendimiento',
     voice: 'ballad',
     personality: 'professional',
     personalityLabel: 'Formal',
     sensitivity: 0.2,
     greetingMessage:
-      'Buenas tardes, gracias por comunicarse. Soy Maxwell, especialista en propiedades de lujo. Será un placer asistirle.',
+      'Buenas tardes, gracias por comunicarse. Soy Maxwell, especialista en recuperación deportiva. Será un placer asistirle.',
     systemPrompt:
-      'Eres Maxwell, un especialista formal y discreto en propiedades de lujo. Tu tono es refinado, paciente y orientado al detalle.',
+      'Eres Maxwell, un especialista formal y discreto en recuperación deportiva de alto rendimiento. Tu tono es refinado, paciente y orientado al detalle. Nunca diagnosticas ni das consejo médico específico.',
   },
   {
     id: 'luna',
     name: 'Luna',
-    role: 'Coordinadora de Recepción de Rentas',
-    badge: 'Enfoque en rentas',
-    icon: 'building2',
+    role: 'Coordinadora de Rehabilitación Post-Quirúrgica',
+    badge: 'Enfoque post-quirúrgico',
+    icon: 'stethoscope',
     accent: 'sage',
-    category: 'Rentas residenciales y comerciales',
-    features: ['Agendar visitas de renta', 'Guía de aplicación', 'Consultas de contrato'],
-    bestFor: 'Administradoras de propiedades, agencias de renta',
+    category: 'Rehabilitación post-quirúrgica',
+    features: ['Agendar sesiones de rehabilitación', 'Guía del proceso de recuperación', 'Consultas de seguimiento'],
+    bestFor: 'Clínicas que reciben pacientes referidos tras una cirugía',
     voice: 'shimmer',
     personality: 'friendly',
     personalityLabel: 'Amigable',
     sensitivity: 0.5,
-    greetingMessage: '¡Hola! Soy Luna. Puedo ayudarte a agendar una visita o resolver dudas sobre nuestras rentas disponibles.',
+    greetingMessage: '¡Hola! Soy Luna. Puedo ayudarte a agendar tu sesión o resolver dudas sobre tu proceso de recuperación.',
     systemPrompt:
-      'Eres Luna, coordinadora de rentas amigable y eficiente. Ayudas a los interesados a agendar visitas y explicas el proceso de aplicación con claridad.',
+      'Eres Luna, coordinadora de rehabilitación post-quirúrgica amigable y eficiente. Ayudas a los pacientes a agendar sesiones y explicas el proceso general con claridad. Nunca diagnosticas ni das consejo médico específico.',
   },
   {
     id: 'aria',
     name: 'Aria',
-    role: 'Coordinadora de Nuevos Listados',
-    badge: 'Enfoque en vendedores',
-    icon: 'clipboard-list',
+    role: 'Coordinadora de Nuevos Pacientes',
+    badge: 'Enfoque en admisión',
+    icon: 'users',
     accent: 'moss',
-    category: 'Representación de vendedores y listados',
-    features: ['Citas de listado', 'Análisis de mercado (CMA)', 'Preguntas frecuentes de vendedores'],
-    bestFor: 'Agentes listadores, representación de vendedores',
+    category: 'Coordinación de nuevos pacientes',
+    features: ['Evaluaciones iniciales', 'Requisitos de primera visita', 'Preguntas frecuentes de admisión'],
+    bestFor: 'Clínicas con alto volumen de pacientes nuevos',
     voice: 'coral',
     personality: 'friendly',
     personalityLabel: 'Amigable',
     sensitivity: 0.5,
-    greetingMessage: '¡Hola! Soy Aria. Si estás pensando en vender tu propiedad, te ayudo a coordinar los siguientes pasos.',
+    greetingMessage: '¡Hola! Soy Aria. Si es tu primera vez con nosotros, te ayudo a coordinar tu evaluación inicial.',
     systemPrompt:
-      'Eres Aria, coordinadora de nuevos listados enfocada en vendedores. Agendas citas de listado, explicas el análisis de mercado y resuelves dudas frecuentes con claridad.',
+      'Eres Aria, coordinadora de nuevos pacientes enfocada en admisión. Agendas evaluaciones iniciales, explicas qué traer a la primera visita y resuelves dudas frecuentes con claridad. Nunca diagnosticas ni das consejo médico específico.',
   },
   {
     id: 'victor',
     name: 'Victor',
-    role: 'Asesor de Bienes Raíces Comerciales',
-    badge: 'Enfoque comercial',
-    icon: 'building',
+    role: 'Asesor de Seguros y Facturación',
+    badge: 'Enfoque en seguros',
+    icon: 'shield-check',
     accent: 'forest',
-    category: 'Propiedades comerciales y de inversión',
-    features: ['Muestras comerciales', 'Manejo de consultas de inversión', 'Consultas de arrendamiento'],
-    bestFor: 'Corredoras comerciales, firmas de inversión',
+    category: 'Seguros y programas clínicos',
+    features: ['Consultas de cobertura de seguro', 'Explicación de copagos', 'Consultas de facturación'],
+    bestFor: 'Clínicas que trabajan con múltiples aseguradoras',
     voice: 'echo',
     personality: 'professional',
     personalityLabel: 'Profesional',
     sensitivity: 0.3,
-    greetingMessage: 'Buenas, soy Victor, asesor de bienes raíces comerciales. ¿En qué tipo de propiedad está interesado?',
+    greetingMessage: 'Buenas, soy Victor, asesor de seguros y facturación. ¿En qué puedo ayudarte hoy?',
     systemPrompt:
-      'Eres Victor, asesor comercial enfocado y analítico. Manejas muestras de propiedades comerciales, consultas de inversión y arrendamiento con precisión.',
+      'Eres Victor, asesor de seguros y facturación enfocado y preciso. Explicas cobertura, copagos y proceso de facturación con datos concretos, nunca inventados. Nunca diagnosticas ni das consejo médico específico.',
   },
   {
     id: 'nova',
     name: 'Nova',
-    role: 'Coordinadora de Inversión Inmobiliaria',
-    badge: 'Enfoque en inversionistas',
+    role: 'Coordinadora de Programas Corporativos',
+    badge: 'Enfoque en empresas',
     icon: 'bar-chart-3',
     accent: 'bronze',
-    category: 'Propiedades comerciales y de inversión',
-    features: ['Consultas de inversión', 'Sesiones de estrategia de portafolio', 'Solicitudes de informe de mercado'],
-    bestFor: 'Agencias de propiedades de inversión, firmas de patrimonio',
+    category: 'Seguros y programas clínicos',
+    features: ['Programas de bienestar corporativo', 'Coordinación con equipos deportivos', 'Reportes de progreso agregados'],
+    bestFor: 'Clínicas con contratos corporativos o de equipos deportivos',
     voice: 'ash',
     personality: 'professional',
     personalityLabel: 'Formal',
     sensitivity: 0.2,
-    greetingMessage: 'Buenas, soy Nova, coordinadora de inversión inmobiliaria. ¿En qué puedo ayudarte hoy?',
+    greetingMessage: 'Buenas, soy Nova, coordinadora de programas corporativos. ¿En qué puedo ayudarte hoy?',
     systemPrompt:
-      'Eres Nova, coordinadora de inversión precisa y analítica. Explicas cap rate, NOI y retorno de inversión con datos concretos, nunca inventados.',
+      'Eres Nova, coordinadora de programas corporativos y de equipos precisa y analítica. Explicas alcance de programas y reportes agregados con datos concretos, nunca inventados. Nunca diagnosticas ni das consejo médico específico.',
   },
 ]
 
@@ -491,25 +426,25 @@ export interface WidgetTemplate {
 }
 
 export const WIDGET_TEMPLATE_CATEGORIES = [
-  'Home Buying & Selling',
-  'Buyer Experience & Follow-Up',
-  'Luxury & Premium Properties',
-  'Residential & Commercial Rentals',
-  'Seller Representation & Listings',
-  'Commercial & Investment Properties',
+  'Booking & General Inquiries',
+  'Patient Experience & Follow-Up',
+  'Sports Recovery & Performance',
+  'Post-Surgical Rehab',
+  'New Patient Coordination',
+  'Insurance & Clinical Programs',
 ] as const
 
 export const WIDGET_TEMPLATES: WidgetTemplate[] = [
   {
     id: 'alexis',
     name: 'Alexis',
-    role: 'Residential Sales Agent',
+    role: 'Appointment Receptionist',
     badge: 'Most Popular',
-    category: 'Home Buying & Selling',
-    features: ['Property viewing booking', 'Buyer consultation scheduling', 'Listing inquiries'],
-    bestFor: 'Residential agencies, Buyer representation',
+    category: 'Booking & General Inquiries',
+    features: ['Appointment booking', 'Program & pricing questions', 'Confirmations & reminders'],
+    bestFor: 'Clinics of any size, first agent for the clinic',
     toneLabel: 'Sage · Professional',
-    greetingMessage: "Hi! Thanks for stopping by — I'm Alexis. What kind of property are you looking for today?",
+    greetingMessage: "Hi! Thanks for stopping by — I'm Alexis. What program are you interested in today?",
     primaryColor: '#166534',
     position: 'bottom-right',
     theme: 'light',
@@ -517,13 +452,13 @@ export const WIDGET_TEMPLATES: WidgetTemplate[] = [
   {
     id: 'grace',
     name: 'Grace',
-    role: 'Client Relations Coordinator',
-    badge: 'Client Favorite',
-    category: 'Buyer Experience & Follow-Up',
-    features: ['Warm client support', 'Follow-up scheduling', 'Neighborhood guidance'],
-    bestFor: 'Buyer agencies, Relocation specialists',
+    role: 'Patient Experience Coordinator',
+    badge: 'Patient Favorite',
+    category: 'Patient Experience & Follow-Up',
+    features: ['Warm patient support', 'Follow-up scheduling', 'Process guidance'],
+    bestFor: 'Clinics focused on repeat patients and treatment adherence',
     toneLabel: 'Shimmer · Friendly',
-    greetingMessage: "Hi there! I'm Grace, your concierge. I'm here to make finding your next home as easy as possible.",
+    greetingMessage: "Hi there! I'm Grace, your clinic assistant. I'm here to make booking your next session as easy as possible.",
     primaryColor: '#db2777',
     position: 'bottom-right',
     theme: 'light',
@@ -531,11 +466,11 @@ export const WIDGET_TEMPLATES: WidgetTemplate[] = [
   {
     id: 'maxwell',
     name: 'Maxwell',
-    role: 'Luxury Property Specialist',
-    badge: 'High-End Agencies',
-    category: 'Luxury & Premium Properties',
-    features: ['Exclusive showing consultations', 'Private client service', 'Investment briefings'],
-    bestFor: 'Luxury agencies, Estate specialists',
+    role: 'Sports Recovery Specialist',
+    badge: 'Boutique Clinics',
+    category: 'Sports Recovery & Performance',
+    features: ['Athlete recovery consultations', 'Private patient service', 'Progress briefings'],
+    bestFor: 'Boutique clinics, high-performance athlete care',
     toneLabel: 'Onyx · Formal',
     greetingMessage: 'Good afternoon, thank you for reaching out. This is Maxwell — it would be my pleasure to assist you.',
     primaryColor: '#1e3a8a',
@@ -545,13 +480,13 @@ export const WIDGET_TEMPLATES: WidgetTemplate[] = [
   {
     id: 'luna',
     name: 'Luna',
-    role: 'Rental Intake Coordinator',
-    badge: 'Rental Focused',
-    category: 'Residential & Commercial Rentals',
-    features: ['Rental showing scheduling', 'Application guidance', 'Lease inquiries'],
-    bestFor: 'Property management firms, Rental agencies',
+    role: 'Post-Surgical Rehab Coordinator',
+    badge: 'Post-Surgical Focus',
+    category: 'Post-Surgical Rehab',
+    features: ['Rehab session scheduling', 'Recovery process guidance', 'Follow-up inquiries'],
+    bestFor: 'Clinics receiving post-surgical referrals',
     toneLabel: 'Shimmer · Friendly',
-    greetingMessage: "Hi! I'm Luna. I can help you book a showing or answer questions about our available rentals.",
+    greetingMessage: "Hi! I'm Luna. I can help you book a session or answer questions about your recovery process.",
     primaryColor: '#0d9488',
     position: 'bottom-right',
     theme: 'light',
@@ -559,13 +494,13 @@ export const WIDGET_TEMPLATES: WidgetTemplate[] = [
   {
     id: 'owen',
     name: 'Owen',
-    role: 'Listing Specialist',
-    badge: 'For Sellers',
-    category: 'Seller Representation & Listings',
-    features: ['Seller consultations', 'Valuation updates', 'Photo session scheduling'],
-    bestFor: 'Listing agents, Seller representation teams',
+    role: 'New Patient Coordinator',
+    badge: 'For Intake',
+    category: 'New Patient Coordination',
+    features: ['Initial evaluations', 'First-visit requirements', 'Intake FAQs'],
+    bestFor: 'High-volume new-patient clinics',
     toneLabel: 'Echo · Professional',
-    greetingMessage: "Hi, I'm Owen. Thinking about selling your property? I'm happy to walk you through the process.",
+    greetingMessage: "Hi, I'm Owen. First time with us? I'm happy to help you set up your initial evaluation.",
     primaryColor: '#2563eb',
     position: 'bottom-right',
     theme: 'light',
@@ -573,13 +508,13 @@ export const WIDGET_TEMPLATES: WidgetTemplate[] = [
   {
     id: 'nora',
     name: 'Nora',
-    role: 'Commercial Investment Advisor',
-    badge: 'Commercial & Investment',
-    category: 'Commercial & Investment Properties',
-    features: ['Investment property analysis', 'Cap rate & ROI', 'Commercial inquiries'],
-    bestFor: 'Commercial firms, Institutional investors',
+    role: 'Insurance & Billing Advisor',
+    badge: 'Insurance & Programs',
+    category: 'Insurance & Clinical Programs',
+    features: ['Insurance coverage questions', 'Copay explanations', 'Billing inquiries'],
+    bestFor: 'Clinics working with multiple insurers',
     toneLabel: 'Ash · Formal',
-    greetingMessage: "Hello, I'm Nora, commercial investment advisor. What type of property are you interested in?",
+    greetingMessage: "Hello, I'm Nora, insurance and billing advisor. What can I help you with today?",
     primaryColor: '#7c3aed',
     position: 'bottom-right',
     theme: 'light',
@@ -603,67 +538,67 @@ export interface CatalogService {
 }
 
 export const SERVICE_CATALOG_CATEGORIES = [
-  'Ventas Residenciales',
-  'Rentas de Propiedades',
-  'Bienes Raíces Comerciales',
-  'Administración de Propiedades',
-  'Inversión y Financiamiento',
-  'Propiedades de Lujo',
-  'Construcción Nueva',
-  'Cierre y Transacciones',
+  'Evaluación y Consulta Inicial',
+  'Rehabilitación Post-Quirúrgica',
+  'Recuperación de Lesiones Deportivas',
+  'Terapia Manual',
+  'Fortalecimiento y Movilidad',
+  'Manejo del Dolor',
+  'Programas para Atletas',
+  'Seguimiento y Alta',
 ] as const
 
-// Pre-built catalog matching the reference template's "32 services across 8
-// specialties" — clicking a card creates a business_services row tagged with
-// this `key` so it shows "Added to your catalog" instead of duplicating.
+// Pre-built catalog of 32 services across 8 specialties — clicking a card
+// creates a business_services row tagged with this `key` so it shows
+// "Added to your catalog" instead of duplicating.
 export const CATALOG_SERVICES: CatalogService[] = [
-  // Ventas Residenciales (6)
-  { key: 'buyer_consultation', category: 'Ventas Residenciales', name: 'Consulta con Comprador', description: 'Sesión individual para entender necesidades, presupuesto y tiempos antes de iniciar la búsqueda.', durationMinutes: 60, priceType: 'fixed', price: 0 },
-  { key: 'property_viewing', category: 'Ventas Residenciales', name: 'Visita a Propiedad', description: 'Recorrido guiado de una propiedad listada con walkthrough completo y desglose de características.', durationMinutes: 60, priceType: 'fixed', price: 0 },
-  { key: 'market_analysis_cma', category: 'Ventas Residenciales', name: 'Análisis de Mercado (CMA)', description: 'Análisis comparativo de mercado para determinar el valor preciso de una propiedad según ventas recientes.', durationMinutes: 45, priceType: 'fixed', price: 0 },
-  { key: 'listing_appointment', category: 'Ventas Residenciales', name: 'Cita de Listado', description: 'Consulta en la propiedad para evaluarla, asesorar sobre precio y delinear el proceso de venta.', durationMinutes: 90, priceType: 'fixed', price: 0 },
-  { key: 'offer_negotiation', category: 'Ventas Residenciales', name: 'Sesión de Negociación de Oferta', description: 'Sesión dedicada a revisar, preparar y negociar ofertas de compra en representación del cliente.', durationMinutes: 60, priceType: 'fixed', price: 0 },
-  { key: 'contract_review', category: 'Ventas Residenciales', name: 'Revisión de Contrato', description: 'Revisión detallada del contrato de compra, contingencias y términos explicados en lenguaje claro.', durationMinutes: 45, priceType: 'fixed', price: 0 },
+  // Evaluación y Consulta Inicial (4)
+  { key: 'initial_evaluation', category: 'Evaluación y Consulta Inicial', name: 'Evaluación Inicial de Fisioterapia', description: 'Revisión de historial, evaluación de movilidad y dolor, y diseño de un plan de tratamiento personalizado.', durationMinutes: 60, priceType: 'fixed', price: 80 },
+  { key: 'follow_up_consultation', category: 'Evaluación y Consulta Inicial', name: 'Consulta de Seguimiento', description: 'Revisión del progreso y ajuste del plan de tratamiento con el terapeuta.', durationMinutes: 30, priceType: 'fixed', price: 50 },
+  { key: 'second_opinion', category: 'Evaluación y Consulta Inicial', name: 'Segunda Opinión Clínica', description: 'Evaluación independiente de un diagnóstico o plan de tratamiento existente.', durationMinutes: 45, priceType: 'fixed', price: 70 },
+  { key: 'telehealth_consultation', category: 'Evaluación y Consulta Inicial', name: 'Consulta de Telemedicina', description: 'Sesión de seguimiento por videollamada para pacientes que no pueden asistir presencialmente.', durationMinutes: 30, priceType: 'fixed', price: 40 },
 
-  // Rentas de Propiedades (5)
-  { key: 'rental_property_showing', category: 'Rentas de Propiedades', name: 'Muestra de Propiedad en Renta', description: 'Muestra programada de unidades de renta disponibles con recorrido completo y orientación de aplicación.', durationMinutes: 45, priceType: 'fixed', price: 0 },
-  { key: 'tenant_screening', category: 'Rentas de Propiedades', name: 'Consulta de Selección de Inquilino', description: 'Revisión de requisitos de aplicación de renta, criterios de selección y tiempos del proceso.', durationMinutes: 30, priceType: 'fixed', price: 0 },
-  { key: 'lease_signing', category: 'Rentas de Propiedades', name: 'Cita de Firma de Contrato', description: 'Sesión presencial o virtual para revisar, explicar y ejecutar el contrato de arrendamiento.', durationMinutes: 60, priceType: 'fixed', price: 0 },
-  { key: 'move_in_inspection', category: 'Rentas de Propiedades', name: 'Inspección de Mudanza', description: 'Recorrido detallado de la propiedad en renta para documentar su condición y completar el checklist de entrada.', durationMinutes: 60, priceType: 'fixed', price: 0 },
-  { key: 'rental_portfolio_review', category: 'Rentas de Propiedades', name: 'Revisión de Portafolio de Rentas', description: 'Evaluación del portafolio de inversión en renta con análisis de vacancia y recomendaciones de optimización.', durationMinutes: 60, priceType: 'starting_at', price: 150 },
+  // Rehabilitación Post-Quirúrgica (4)
+  { key: 'post_surgical_knee', category: 'Rehabilitación Post-Quirúrgica', name: 'Rehabilitación Post-Quirúrgica de Rodilla', description: 'Programa de recuperación progresiva tras cirugía de rodilla (LCA, menisco, reemplazo articular).', durationMinutes: 60, priceType: 'starting_at', price: 65 },
+  { key: 'post_surgical_shoulder', category: 'Rehabilitación Post-Quirúrgica', name: 'Rehabilitación Post-Quirúrgica de Hombro', description: 'Programa de recuperación de movilidad y fuerza tras cirugía de hombro.', durationMinutes: 60, priceType: 'starting_at', price: 65 },
+  { key: 'post_surgical_spine', category: 'Rehabilitación Post-Quirúrgica', name: 'Rehabilitación Post-Quirúrgica de Columna', description: 'Programa de recuperación funcional tras cirugía de columna, con progresión cuidadosa de carga.', durationMinutes: 60, priceType: 'starting_at', price: 70 },
+  { key: 'post_surgical_hip', category: 'Rehabilitación Post-Quirúrgica', name: 'Rehabilitación Post-Quirúrgica de Cadera', description: 'Programa de recuperación de movilidad y marcha tras cirugía o reemplazo de cadera.', durationMinutes: 60, priceType: 'starting_at', price: 65 },
 
-  // Bienes Raíces Comerciales (4)
-  { key: 'commercial_property_viewing', category: 'Bienes Raíces Comerciales', name: 'Visita a Propiedad Comercial', description: 'Recorrido guiado del espacio comercial con zonificación, metraje y opciones de layout.', durationMinutes: 60, priceType: 'fixed', price: 0 },
-  { key: 'commercial_lease_consultation', category: 'Bienes Raíces Comerciales', name: 'Consulta de Arrendamiento Comercial', description: 'Revisión a fondo de términos de arrendamiento comercial, estructuras NNN, cargos CAM y mejoras del inquilino.', durationMinutes: 60, priceType: 'starting_at', price: 200 },
-  { key: 'investment_property_analysis', category: 'Bienes Raíces Comerciales', name: 'Análisis de Propiedad de Inversión', description: 'Cap rate, NOI y análisis de retorno sobre efectivo invertido para propiedades comerciales de inversión.', durationMinutes: 90, priceType: 'starting_at', price: 300 },
-  { key: 'business_relocation', category: 'Bienes Raíces Comerciales', name: 'Consulta de Reubicación de Negocio', description: 'Planeación estratégica para reubicar oficina o local, incluyendo evaluación de necesidades y selección de sitio.', durationMinutes: 60, priceType: 'fixed', price: 0 },
+  // Recuperación de Lesiones Deportivas (4)
+  { key: 'sports_injury_assessment', category: 'Recuperación de Lesiones Deportivas', name: 'Evaluación de Lesión Deportiva', description: 'Diagnóstico funcional de una lesión relacionada con la práctica deportiva.', durationMinutes: 45, priceType: 'fixed', price: 75 },
+  { key: 'acl_recovery', category: 'Recuperación de Lesiones Deportivas', name: 'Programa de Recuperación de LCA', description: 'Plan progresivo de fortalecimiento y estabilidad para lesiones de ligamento cruzado anterior.', durationMinutes: 60, priceType: 'starting_at', price: 70 },
+  { key: 'ankle_sprain_recovery', category: 'Recuperación de Lesiones Deportivas', name: 'Recuperación de Esguince de Tobillo', description: 'Tratamiento de movilidad, estabilidad y propiocepción tras un esguince.', durationMinutes: 45, priceType: 'fixed', price: 55 },
+  { key: 'return_to_play', category: 'Recuperación de Lesiones Deportivas', name: 'Programa de Regreso al Juego', description: 'Evaluación funcional final para autorizar el regreso seguro a la actividad deportiva.', durationMinutes: 60, priceType: 'starting_at', price: 80 },
 
-  // Administración de Propiedades (4)
-  { key: 'property_management_onboarding', category: 'Administración de Propiedades', name: 'Incorporación de Administración', description: 'Consulta inicial para transferir responsabilidades de administración, configurar sistemas y delinear el reporte al propietario.', durationMinutes: 90, priceType: 'fixed', price: 0 },
-  { key: 'annual_property_review', category: 'Administración de Propiedades', name: 'Revisión Anual de Propiedad', description: 'Revisión integral del desempeño de la propiedad, tarifas de renta, historial de mantenimiento y metas del propietario.', durationMinutes: 60, priceType: 'fixed', price: 0 },
-  { key: 'maintenance_coordination', category: 'Administración de Propiedades', name: 'Coordinación de Mantenimiento', description: 'Llamada para coordinar reparaciones, proveedores y tiempos de mantenimiento con el propietario.', durationMinutes: 30, priceType: 'fixed', price: 0 },
-  { key: 'owner_financial_reporting', category: 'Administración de Propiedades', name: 'Reporte Financiero al Propietario', description: 'Sesión para revisar estados de cuenta, ingresos por renta y gastos del periodo con el propietario.', durationMinutes: 45, priceType: 'fixed', price: 0 },
+  // Terapia Manual (4)
+  { key: 'manual_therapy', category: 'Terapia Manual', name: 'Terapia Manual', description: 'Técnicas prácticas para mejorar movilidad articular y reducir tensión muscular.', durationMinutes: 45, priceType: 'fixed', price: 60 },
+  { key: 'myofascial_release', category: 'Terapia Manual', name: 'Liberación Miofascial', description: 'Técnica manual dirigida a liberar tensión en el tejido conectivo y muscular.', durationMinutes: 45, priceType: 'fixed', price: 60 },
+  { key: 'joint_mobilization', category: 'Terapia Manual', name: 'Movilización Articular', description: 'Técnicas manuales específicas para restaurar el rango de movimiento de una articulación.', durationMinutes: 30, priceType: 'fixed', price: 50 },
+  { key: 'dry_needling', category: 'Terapia Manual', name: 'Punción Seca', description: 'Técnica con aguja fina para liberar puntos gatillo musculares y reducir el dolor.', durationMinutes: 30, priceType: 'fixed', price: 55 },
 
-  // Inversión y Financiamiento (4)
-  { key: 'financing_prequalification', category: 'Inversión y Financiamiento', name: 'Llamada de Pre-calificación', description: 'Orientación inicial sobre opciones de financiamiento y pre-calificación antes de iniciar la búsqueda.', durationMinutes: 30, priceType: 'fixed', price: 0 },
-  { key: 'cash_flow_analysis', category: 'Inversión y Financiamiento', name: 'Análisis de Flujo de Caja', description: 'Proyección de ingresos y gastos para evaluar la rentabilidad de una propiedad de inversión.', durationMinutes: 60, priceType: 'fixed', price: 0 },
-  { key: 'refinance_consultation', category: 'Inversión y Financiamiento', name: 'Consulta de Refinanciamiento', description: 'Revisión de opciones de refinanciamiento para propietarios e inversionistas.', durationMinutes: 45, priceType: 'fixed', price: 0 },
-  { key: 'exchange_consultation', category: 'Inversión y Financiamiento', name: 'Consulta de Intercambio de Propiedades', description: 'Orientación sobre estrategias de intercambio para diferir impuestos en la venta de propiedades de inversión.', durationMinutes: 60, priceType: 'fixed', price: 0 },
+  // Fortalecimiento y Movilidad (4)
+  { key: 'strength_training', category: 'Fortalecimiento y Movilidad', name: 'Programa de Fortalecimiento', description: 'Plan de ejercicios progresivos para recuperar fuerza muscular específica.', durationMinutes: 45, priceType: 'fixed', price: 55 },
+  { key: 'mobility_program', category: 'Fortalecimiento y Movilidad', name: 'Programa de Movilidad', description: 'Rutina de ejercicios enfocada en recuperar y mantener el rango de movimiento articular.', durationMinutes: 45, priceType: 'fixed', price: 50 },
+  { key: 'balance_training', category: 'Fortalecimiento y Movilidad', name: 'Entrenamiento de Equilibrio', description: 'Ejercicios de estabilidad y propiocepción, especialmente útiles tras lesiones de tobillo o rodilla.', durationMinutes: 30, priceType: 'fixed', price: 45 },
+  { key: 'posture_correction', category: 'Fortalecimiento y Movilidad', name: 'Corrección Postural', description: 'Evaluación y ejercicios correctivos para mejorar la alineación postural.', durationMinutes: 45, priceType: 'fixed', price: 55 },
 
-  // Propiedades de Lujo (3)
-  { key: 'private_showing', category: 'Propiedades de Lujo', name: 'Consulta de Exhibición Privada', description: 'Recorrido privado y exclusivo de una propiedad de lujo, con atención personalizada.', durationMinutes: 90, priceType: 'fixed', price: 0 },
-  { key: 'luxury_market_briefing', category: 'Propiedades de Lujo', name: 'Informe de Mercado de Lujo', description: 'Resumen del segmento premium: tendencias, comparables y posicionamiento de precio.', durationMinutes: 45, priceType: 'fixed', price: 0 },
-  { key: 'concierge_relocation', category: 'Propiedades de Lujo', name: 'Servicio de Reubicación Concierge', description: 'Acompañamiento integral para clientes que se reubican, desde la búsqueda hasta el cierre.', durationMinutes: 60, priceType: 'fixed', price: 0 },
+  // Manejo del Dolor (4)
+  { key: 'chronic_pain_management', category: 'Manejo del Dolor', name: 'Manejo de Dolor Crónico', description: 'Plan integral para reducir el dolor persistente y mejorar la función diaria.', durationMinutes: 45, priceType: 'fixed', price: 65 },
+  { key: 'modality_treatment', category: 'Manejo del Dolor', name: 'Electroterapia / Ultrasonido', description: 'Tratamiento con corrientes eléctricas o ultrasonido terapéutico para reducir dolor e inflamación.', durationMinutes: 30, priceType: 'fixed', price: 40 },
+  { key: 'cold_laser_therapy', category: 'Manejo del Dolor', name: 'Terapia Láser Frío', description: 'Tratamiento con láser de baja intensidad para acelerar la recuperación tisular.', durationMinutes: 20, priceType: 'fixed', price: 35 },
+  { key: 'headache_treatment', category: 'Manejo del Dolor', name: 'Tratamiento de Cefaleas Tensionales', description: 'Terapia manual y ejercicios dirigidos a reducir el dolor de cabeza de origen muscular o postural.', durationMinutes: 30, priceType: 'fixed', price: 45 },
 
-  // Construcción Nueva (3)
-  { key: 'new_construction_walkthrough', category: 'Construcción Nueva', name: 'Recorrido de Construcción Nueva', description: 'Visita guiada a un desarrollo de construcción nueva, con detalle de acabados y opciones disponibles.', durationMinutes: 60, priceType: 'fixed', price: 0 },
-  { key: 'builder_consultation', category: 'Construcción Nueva', name: 'Consulta con Constructora', description: 'Sesión para conectar al cliente con el equipo de la constructora y resolver dudas del proyecto.', durationMinutes: 45, priceType: 'fixed', price: 0 },
-  { key: 'custom_home_planning', category: 'Construcción Nueva', name: 'Sesión de Planeación de Casa a Medida', description: 'Consulta inicial para definir alcance, presupuesto y tiempos de un proyecto de casa a medida.', durationMinutes: 90, priceType: 'fixed', price: 0 },
+  // Programas para Atletas (4)
+  { key: 'athlete_performance_program', category: 'Programas para Atletas', name: 'Programa de Rendimiento Deportivo', description: 'Plan de acondicionamiento físico enfocado en mejorar el desempeño atlético.', durationMinutes: 60, priceType: 'starting_at', price: 75 },
+  { key: 'injury_prevention_screening', category: 'Programas para Atletas', name: 'Evaluación de Prevención de Lesiones', description: 'Análisis de movimiento para identificar riesgos de lesión antes de que ocurran.', durationMinutes: 45, priceType: 'fixed', price: 60 },
+  { key: 'team_athletic_assessment', category: 'Programas para Atletas', name: 'Evaluación Atlética Grupal', description: 'Evaluación de movilidad y riesgo de lesión para equipos deportivos completos.', durationMinutes: 90, priceType: 'starting_at', price: 200 },
+  { key: 'sport_specific_conditioning', category: 'Programas para Atletas', name: 'Acondicionamiento Específico por Deporte', description: 'Programa de ejercicios adaptado a las demandas físicas de un deporte en particular.', durationMinutes: 60, priceType: 'starting_at', price: 65 },
 
-  // Cierre y Transacciones (3)
-  { key: 'closing_coordination', category: 'Cierre y Transacciones', name: 'Llamada de Coordinación de Cierre', description: 'Coordinación de fechas, documentos y requisitos pendientes antes del cierre de la transacción.', durationMinutes: 30, priceType: 'fixed', price: 0 },
-  { key: 'title_escrow_consultation', category: 'Cierre y Transacciones', name: 'Consulta de Título y Custodia', description: 'Explicación del proceso de título y cuenta en custodia (escrow) antes del cierre.', durationMinutes: 30, priceType: 'fixed', price: 0 },
-  { key: 'final_walkthrough', category: 'Cierre y Transacciones', name: 'Recorrido Final', description: 'Inspección final de la propiedad justo antes del cierre para confirmar su condición.', durationMinutes: 30, priceType: 'fixed', price: 0 },
+  // Seguimiento y Alta (4)
+  { key: 'progress_reassessment', category: 'Seguimiento y Alta', name: 'Reevaluación de Progreso', description: 'Medición objetiva de avances en dolor y movilidad para ajustar el plan de tratamiento.', durationMinutes: 30, priceType: 'fixed', price: 45 },
+  { key: 'home_program_review', category: 'Seguimiento y Alta', name: 'Revisión de Programa de Ejercicios en Casa', description: 'Sesión breve para revisar técnica y ajustar los ejercicios prescritos para casa.', durationMinutes: 20, priceType: 'fixed', price: 30 },
+  { key: 'discharge_evaluation', category: 'Seguimiento y Alta', name: 'Evaluación de Alta', description: 'Evaluación final para confirmar que el paciente puede finalizar su plan de tratamiento con seguridad.', durationMinutes: 30, priceType: 'fixed', price: 40 },
+  { key: 'maintenance_session', category: 'Seguimiento y Alta', name: 'Sesión de Mantenimiento', description: 'Sesión periódica opcional para mantener los resultados obtenidos después del alta.', durationMinutes: 30, priceType: 'fixed', price: 45 },
 ]
 
 export const OPENAI_REALTIME_MODEL = process.env.OPENAI_REALTIME_MODEL ?? 'gpt-realtime'

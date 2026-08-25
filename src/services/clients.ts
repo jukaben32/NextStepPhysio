@@ -23,8 +23,8 @@ export async function findOrCreateClientByPhone(
     name?: string
     phone?: string
     email?: string
-    budget?: number
-    preApprovalNumber?: string
+    insuranceProvider?: string
+    referralSource?: string
     source?: Client['source']
   }
 ): Promise<Client> {
@@ -42,8 +42,8 @@ export async function findOrCreateClientByPhone(
         .update({
           name: input.name ?? existing.name,
           email: input.email ?? existing.email,
-          budget: input.budget ?? existing.budget,
-          pre_approval_number: input.preApprovalNumber ?? existing.pre_approval_number,
+          insurance_provider: input.insuranceProvider ?? existing.insurance_provider,
+          referral_source: input.referralSource ?? existing.referral_source,
         })
         .eq('id', existing.id)
         .select('*')
@@ -60,8 +60,8 @@ export async function findOrCreateClientByPhone(
       name: input.name ?? 'Unknown',
       phone: input.phone,
       email: input.email,
-      budget: input.budget,
-      pre_approval_number: input.preApprovalNumber,
+      insurance_provider: input.insuranceProvider,
+      referral_source: input.referralSource,
       source: input.source ?? 'ai_call',
     })
     .select('*')

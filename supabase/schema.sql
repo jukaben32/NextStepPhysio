@@ -1,5 +1,5 @@
 -- ═══════════════════════════════════════════════════════════════════════════
--- Real Estate AI Calling Agent SaaS — Database Schema
+-- NextStep Physio AI Calling Agent SaaS — Database Schema
 -- Postgres / Supabase. Multi-tenant: every domain table hangs off `businesses`.
 -- ═══════════════════════════════════════════════════════════════════════════
 
@@ -139,7 +139,7 @@ create table if not exists ai_agents (
   id                uuid primary key default gen_random_uuid(),
   business_id       uuid not null references businesses(id) on delete cascade,
   name              text not null,
-  specialty         text not null default 'Residential Specialist',
+  specialty         text not null default 'Rehab Specialist',
   voice             text not null default 'alloy',
   personality       text not null default 'friendly',
   sensitivity       numeric(3,2) not null default 0.5 check (sensitivity between 0 and 1),
@@ -270,7 +270,8 @@ create table if not exists clients (
   name          text not null default 'Unknown',
   phone         text,
   email         text,
-  budget        numeric(14,2),
+  insurance_provider text,
+  referral_source     text,
   source        text not null default 'ai_call'
     check (source in ('ai_call','widget_chat','manual','website_form')),
   notes         text,
@@ -464,8 +465,8 @@ create table if not exists widgets (
   id               uuid primary key default gen_random_uuid(),
   business_id      uuid not null references businesses(id) on delete cascade unique,
   is_enabled       boolean not null default true,
-  primary_color    text not null default '#2563eb',
-  greeting_message text not null default 'Hi! Ask me about any of our listings.',
+  primary_color    text not null default '#1B5E6B',
+  greeting_message text not null default '¡Hola! Pregúntame sobre cualquiera de nuestros programas.',
   allowed_origins  text[] not null default '{}',
   created_at       timestamptz not null default now(),
   updated_at       timestamptz not null default now()
@@ -658,8 +659,7 @@ alter table conversations add column if not exists sentiment text
 -- 21. APPOINTMENTS — reschedule/cancellation/payment tracking columns.
 -- These already existed on the live project (added out-of-band before this
 -- file tracked them) except for service_id; documenting them here so
--- schema.sql stops drifting from reality. clients.pre_approval_number backs
--- the "Pre-Approval #" field on the manual "New Viewing" form.
+-- schema.sql stops drifting from reality.
 alter table appointments add column if not exists rescheduled_from timestamptz;
 alter table appointments add column if not exists requested_scheduled_at timestamptz;
 alter table appointments add column if not exists reschedule_requested_at timestamptz;
@@ -678,8 +678,6 @@ alter table appointments add column if not exists paid_at timestamptz;
 alter table appointments add column if not exists reminder_sent_at timestamptz;
 alter table appointments add column if not exists service_id uuid
   references business_services(id) on delete set null;
-
-alter table clients add column if not exists pre_approval_number text;
 
 -- 22. AI AGENTS — language field (matches the reference template's "Language"
 -- field on the agent settings form) + AGENT SERVICES (join table: which
@@ -756,7 +754,7 @@ alter table websites add column if not exists site_description text;
 -- the About Section body — both already existed, so not duplicated).
 alter table websites add column if not exists hero_subheadline text;
 alter table websites add column if not exists hero_image_url text;
-alter table websites add column if not exists cta_primary_text text not null default 'Book a Viewing';
+alter table websites add column if not exists cta_primary_text text not null default 'Book Now';
 alter table websites add column if not exists cta_secondary_text text not null default 'Call Now';
 alter table websites add column if not exists years_experience integer;
 alter table websites add column if not exists clients_served integer;
@@ -951,10 +949,10 @@ alter table business_availability add constraint business_availability_slot_minu
 alter table websites add column if not exists about_story text;
 alter table websites add column if not exists about_photo_url text;
 alter table websites add column if not exists trust_badges text[] not null default array[
-  'Licensed Real Estate Agents',
-  'Accepting New Clients',
-  'Virtual Viewings Available',
-  'Free Market Analysis'
+  'Licensed Physical Therapists',
+  'Accepting New Patients',
+  'Sports & Post-Surgical Recovery',
+  'Free Initial Assessment'
 ];
 
 -- 34. WEBSITE SERVICES — the Website Builder's own Services list (icon,
@@ -967,7 +965,7 @@ alter table websites add column if not exists trust_badges text[] not null defau
 create table if not exists website_services (
   id          uuid primary key default gen_random_uuid(),
   business_id uuid not null references businesses(id) on delete cascade,
-  icon        text not null default 'home',
+  icon        text not null default 'activity',
   name        text not null default '',
   description text,
   duration    text,
@@ -1550,3 +1548,103 @@ alter table booking_affiliate_settings enable row level security;
 drop policy if exists "Business owners can manage their booking affiliate settings" on booking_affiliate_settings;
 create policy "Business owners can manage their booking affiliate settings"
   on booking_affiliate_settings for all using (is_business_owner(business_id));
+
+-- 50. RECOVERY LOGS — pain/mobility check-ins a staff member records for a
+-- patient (dashboard "Progreso" tab), optionally tied to the appointment it
+-- was logged at. Patients can read their own history through the portal but
+-- never write to it directly — only staff (is_business_owner) log entries.
+create table if not exists recovery_logs (
+  id             uuid primary key default gen_random_uuid(),
+  business_id    uuid not null references businesses(id) on delete cascade,
+  client_id      uuid not null references clients(id) on delete cascade,
+  appointment_id uuid references appointments(id) on delete set null,
+  pain_level     integer check (pain_level between 0 and 10),
+  mobility_score integer check (mobility_score between 0 and 100),
+  notes          text,
+  logged_by      uuid not null references auth.users(id),
+  logged_at      timestamptz not null default now(),
+  created_at     timestamptz not null default now()
+);
+
+create index if not exists idx_recovery_logs_business_id on recovery_logs (business_id);
+create index if not exists idx_recovery_logs_client_id on recovery_logs (client_id);
+
+alter table recovery_logs enable row level security;
+
+drop policy if exists "Business owners can manage recovery logs" on recovery_logs;
+create policy "Business owners can manage recovery logs"
+  on recovery_logs for all using (is_business_owner(business_id));
+drop policy if exists "Patients can view their own recovery logs" on recovery_logs;
+create policy "Patients can view their own recovery logs"
+  on recovery_logs for select using (
+    exists (select 1 from clients c where c.id = client_id and c.auth_user_id = auth.uid())
+  );
+
+-- 51. EXERCISE VIDEOS — a business's reusable library of prescribed-exercise
+-- videos (dashboard "Ejercicios" tab), independent of any one patient until
+-- assigned via prescribed_exercises.
+create table if not exists exercise_videos (
+  id              uuid primary key default gen_random_uuid(),
+  business_id     uuid not null references businesses(id) on delete cascade,
+  title           text not null,
+  description     text,
+  video_url       text not null,
+  thumbnail_url   text,
+  category        text,
+  duration_seconds integer,
+  is_active       boolean not null default true,
+  sort_order      integer not null default 0,
+  created_at      timestamptz not null default now(),
+  updated_at      timestamptz not null default now()
+);
+
+create index if not exists idx_exercise_videos_business_id on exercise_videos (business_id);
+
+drop trigger if exists update_exercise_videos_updated_at on exercise_videos;
+create trigger update_exercise_videos_updated_at
+  before update on exercise_videos
+  for each row execute function update_updated_at_column();
+
+alter table exercise_videos enable row level security;
+
+drop policy if exists "Business owners can manage exercise videos" on exercise_videos;
+create policy "Business owners can manage exercise videos"
+  on exercise_videos for all using (is_business_owner(business_id));
+drop policy if exists "Patients can view videos assigned to them" on exercise_videos;
+create policy "Patients can view videos assigned to them"
+  on exercise_videos for select using (
+    exists (
+      select 1 from prescribed_exercises pe
+      join clients c on c.id = pe.client_id
+      where pe.exercise_video_id = id and c.auth_user_id = auth.uid()
+    )
+  );
+
+-- 52. PRESCRIBED EXERCISES — join: which exercise_videos a staff member has
+-- assigned to which patient, with sets/reps/frequency. Patients can read
+-- their own assignments through the portal but never write to them.
+create table if not exists prescribed_exercises (
+  id                 uuid primary key default gen_random_uuid(),
+  business_id        uuid not null references businesses(id) on delete cascade,
+  client_id          uuid not null references clients(id) on delete cascade,
+  exercise_video_id  uuid not null references exercise_videos(id) on delete cascade,
+  sets               integer,
+  reps               integer,
+  frequency          text,
+  notes              text,
+  assigned_at        timestamptz not null default now()
+);
+
+create index if not exists idx_prescribed_exercises_business_id on prescribed_exercises (business_id);
+create index if not exists idx_prescribed_exercises_client_id on prescribed_exercises (client_id);
+
+alter table prescribed_exercises enable row level security;
+
+drop policy if exists "Business owners can manage prescribed exercises" on prescribed_exercises;
+create policy "Business owners can manage prescribed exercises"
+  on prescribed_exercises for all using (is_business_owner(business_id));
+drop policy if exists "Patients can view their own prescribed exercises" on prescribed_exercises;
+create policy "Patients can view their own prescribed exercises"
+  on prescribed_exercises for select using (
+    exists (select 1 from clients c where c.id = client_id and c.auth_user_id = auth.uid())
+  );

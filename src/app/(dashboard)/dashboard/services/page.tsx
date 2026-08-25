@@ -23,7 +23,7 @@ export default async function ServicesPage() {
         <div>
           <h1 className="font-display font-semibold text-xl text-[var(--text-1)]">Servicios</h1>
           <p className="text-sm text-[var(--text-3)]">
-            Lo que tus agentes IA pueden ofrecer a quien llama, sin depender de una sola propiedad.
+            Los programas y tratamientos que tus agentes IA pueden ofrecer y agendar por ti.
           </p>
         </div>
       </div>

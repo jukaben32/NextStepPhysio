@@ -34,8 +34,8 @@ export default async function ClientsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-display font-semibold text-2xl text-[var(--text-1)]">Clientes</h1>
-        <p className="text-sm text-[var(--text-3)] mt-1">Perfiles de clientes e historial de visitas</p>
+        <h1 className="font-display font-semibold text-2xl text-[var(--text-1)]">Pacientes</h1>
+        <p className="text-sm text-[var(--text-3)] mt-1">Perfiles de pacientes e historial de citas</p>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">

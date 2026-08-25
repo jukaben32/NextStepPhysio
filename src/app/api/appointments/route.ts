@@ -28,8 +28,8 @@ export async function POST(request: Request) {
     name: input.clientName,
     phone: input.clientPhone,
     email: input.clientEmail || undefined,
-    budget: input.budget,
-    preApprovalNumber: input.preApprovalNumber,
+    insuranceProvider: input.insuranceProvider,
+    referralSource: input.referralSource,
     source: 'manual',
   })
 

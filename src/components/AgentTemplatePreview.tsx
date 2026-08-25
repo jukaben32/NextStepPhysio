@@ -1,15 +1,15 @@
 'use client'
 
-import { X, Sparkles, Home, Heart, Star, Building2, ClipboardList, Building, BarChart3, MessageCircle, FileText } from 'lucide-react'
+import { X, Sparkles, Activity, Heart, Star, Stethoscope, Users, ShieldCheck, BarChart3, MessageCircle, FileText } from 'lucide-react'
 import { AGENT_TEMPLATE_ACCENT_STYLES, type AgentTemplate } from '@/constants'
 
 const ICONS = {
-  home: Home,
+  activity: Activity,
   heart: Heart,
   star: Star,
-  building2: Building2,
-  'clipboard-list': ClipboardList,
-  building: Building,
+  stethoscope: Stethoscope,
+  users: Users,
+  'shield-check': ShieldCheck,
   'bar-chart-3': BarChart3,
 } as const
 

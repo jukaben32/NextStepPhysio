@@ -66,7 +66,7 @@ export interface ConversationWithClient extends Conversation {
 }
 
 export interface AppointmentWithDetails extends Appointment {
-  client: Pick<Client, 'id' | 'name' | 'phone' | 'email' | 'budget' | 'pre_approval_number'> | null
+  client: Pick<Client, 'id' | 'name' | 'phone' | 'email' | 'insurance_provider' | 'referral_source'> | null
   service: Pick<BusinessService, 'id' | 'name' | 'price' | 'duration_minutes'> | null
 }
 
@@ -146,7 +146,7 @@ export interface RealtimeSessionResponse {
 export interface VoiceCallOutcome {
   clientName?: string
   clientPhone?: string
-  budget?: number
+  insuranceProvider?: string
   appointment?: {
     date: string
     time: string

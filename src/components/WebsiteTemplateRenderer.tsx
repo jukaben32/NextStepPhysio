@@ -9,11 +9,11 @@ import {
   ChevronDown,
   CheckCircle2,
   Check,
-  Home,
-  Building2,
-  TrendingUp,
-  ClipboardList,
-  Key,
+  Activity,
+  HeartPulse,
+  Stethoscope,
+  Users,
+  Dumbbell,
   Loader2,
   Send,
 } from 'lucide-react'
@@ -63,21 +63,21 @@ const FONT_LINKS: Record<string, string> = {
 }
 
 const ABOUT_HIGHLIGHTS = [
-  'Licensed Real Estate Agents',
-  'Accepting New Clients',
-  'Virtual Viewings Available',
-  'Free Market Analysis',
+  'Licensed Physical Therapists',
+  'Accepting New Patients',
+  'Sports & Post-Surgical Recovery',
+  'Free Initial Assessment',
 ]
 
 // Keyed so a service's icon choice survives a save/reload instead of being
 // re-derived from its position in the list — keep in sync with
 // SERVICE_ICON_OPTIONS in WebsiteEditor.
 const SERVICE_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
-  home: Home,
-  clipboard: ClipboardList,
-  trending: TrendingUp,
-  building: Building2,
-  key: Key,
+  activity: Activity,
+  heartpulse: HeartPulse,
+  stethoscope: Stethoscope,
+  users: Users,
+  dumbbell: Dumbbell,
 }
 
 function toDecimalDegrees(degrees: string, minutes = '0', seconds = '0', direction: string) {
@@ -183,12 +183,12 @@ export function WebsiteTemplateRenderer({
             Now Accepting New Clients
           </span>
           <h1 className="text-4xl sm:text-5xl font-bold leading-tight mb-4">
-            {website.headline || 'Premium Real Estate, Exceptional Service'}
+            {website.headline || 'Expert Rehab, Faster Recovery'}
           </h1>
           <p className="mb-6" style={{ color: style.subtext }}>
             {website.hero_subheadline ||
               website.about ||
-              'We help buyers, sellers, and investors find their perfect property with expert guidance and personalized service from our dedicated team.'}
+              'We help accident survivors, post-surgical patients, and injured athletes recover with expert guidance and personalized care from our dedicated team.'}
           </p>
           <div className="flex flex-wrap items-center gap-3 mb-8">
             <a
@@ -225,7 +225,7 @@ export function WebsiteTemplateRenderer({
             ) : (
               isEditorPreview && (
                 <div className="text-center px-4" style={{ color: style.subtext }}>
-                  <Home className="w-6 h-6 mx-auto mb-1.5 opacity-60" />
+                  <Activity className="w-6 h-6 mx-auto mb-1.5 opacity-60" />
                   <p className="text-xs">Upload a hero image in the editor</p>
                 </div>
               )
@@ -294,13 +294,13 @@ export function WebsiteTemplateRenderer({
           <p className="text-xs font-semibold tracking-widest mb-2" style={{ color: website.primary_color }}>
             WHAT WE OFFER
           </p>
-          <h2 className="text-3xl font-bold mb-2">Our Property Services</h2>
+          <h2 className="text-3xl font-bold mb-2">Our Recovery Programs</h2>
           <p className="max-w-lg mx-auto mb-8" style={{ color: style.subtext }}>
-            Comprehensive care tailored to every stage of your property journey.
+            Comprehensive care tailored to every stage of your recovery.
           </p>
           <div className="max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-4 text-left">
             {services.map((s) => {
-              const Icon = SERVICE_ICONS[s.icon] ?? Home
+              const Icon = SERVICE_ICONS[s.icon] ?? Activity
               return (
                 <div key={s.id} className="rounded-xl p-4 border" style={{ borderColor: style.border, backgroundColor: style.bg }}>
                   <span
@@ -362,7 +362,7 @@ export function WebsiteTemplateRenderer({
               // eslint-disable-next-line @next/next/no-img-element
               <img src={website.about_photo_url} alt="" className="w-full h-full object-cover" />
             ) : (
-              <Home className="w-8 h-8 opacity-30" />
+              <Activity className="w-8 h-8 opacity-30" />
             )}
           </div>
         </section>
@@ -538,7 +538,7 @@ export function WebsiteTemplateRenderer({
             </div>
           )}
           <div>
-            <p className="mb-1">{website.footer_tagline || 'Your trusted partner in real estate.'}</p>
+            <p className="mb-1">{website.footer_tagline || 'Your trusted partner in recovery.'}</p>
             <p>{website.footer_copyright || `© ${new Date().getFullYear()} ${businessName}. All rights reserved.`}</p>
           </div>
         </div>

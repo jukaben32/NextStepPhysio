@@ -1,7 +1,7 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { BriefcaseBusiness, CalendarCheck, CalendarClock, CalendarDays, ChevronLeft, ChevronRight, CreditCard, DollarSign, Mail, Phone, User, X } from 'lucide-react'
+import { BriefcaseBusiness, CalendarCheck, CalendarClock, CalendarDays, ChevronLeft, ChevronRight, CreditCard, DollarSign, Mail, Phone, ShieldCheck, User, X } from 'lucide-react'
 import type { AppointmentWithDetails } from '@/types'
 import { formatDateTime } from '@/lib/formatDate'
 import {
@@ -206,8 +206,8 @@ function AppointmentDrawer({
             <p className="flex items-center gap-2"><Phone className="w-3.5 h-3.5 text-[var(--text-4)]" /> {appt.client?.phone ?? '—'}</p>
             <p className="flex items-center gap-2"><Mail className="w-3.5 h-3.5 text-[var(--text-4)]" /> {appt.client?.email ?? '—'}</p>
             <p className="flex items-center gap-2">
-              <DollarSign className="w-3.5 h-3.5 text-[var(--text-4)]" />
-              {appt.client?.budget ? `$${appt.client.budget.toLocaleString()}` : '—'}
+              <ShieldCheck className="w-3.5 h-3.5 text-[var(--text-4)]" />
+              {appt.client?.insurance_provider ?? '—'}
             </p>
           </div>
         </div>

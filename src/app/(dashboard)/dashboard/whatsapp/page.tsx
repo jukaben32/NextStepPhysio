@@ -29,7 +29,7 @@ const IMPLEMENTATION_NOTES: Array<{
   {
     icon: Sparkles,
     title: 'One channel, same knowledge base',
-    text: 'The assistant can search listings, FAQs, appointments and payments before replying.',
+    text: 'The assistant can search programs, FAQs, appointments and payments before replying.',
   },
 ]
 

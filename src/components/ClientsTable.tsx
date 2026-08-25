@@ -57,7 +57,7 @@ export function ClientsTable({
   return (
     <div>
       <input
-        placeholder="Buscar por nombre, teléfono o presupuesto..."
+        placeholder="Buscar por nombre, teléfono o correo..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         className="input-field w-full mb-4"
@@ -87,12 +87,12 @@ export function ClientsTable({
                 <div className="flex flex-wrap items-center gap-3">
                   {clientAppointments.length > 0 && (
                     <span className="text-xs text-[var(--text-3)]">
-                      {clientAppointments.length} {clientAppointments.length === 1 ? 'visita' : 'visitas'}
+                      {clientAppointments.length} {clientAppointments.length === 1 ? 'cita' : 'citas'}
                     </span>
                   )}
-                  {client.budget != null && (
-                    <p className="text-sm font-semibold sm:w-28 sm:text-right text-[var(--teal-700)]">
-                      ${client.budget.toLocaleString()}
+                  {client.insurance_provider && (
+                    <p className="text-sm font-semibold text-[var(--teal-700)]">
+                      {client.insurance_provider}
                     </p>
                   )}
                   <span className="badge bg-[var(--teal-50)] border-transparent text-[var(--teal-700)]">
@@ -109,30 +109,30 @@ export function ClientsTable({
                   <div className="flex flex-wrap gap-3 mb-3">
                     <div className="card-surface px-3.5 py-2">
                       <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--text-3)]">
-                        Presupuesto
+                        Seguro médico
                       </p>
                       <p className="text-sm font-semibold text-[var(--text-1)]">
-                        {client.budget != null ? `$${client.budget.toLocaleString()}` : '—'}
+                        {client.insurance_provider ?? '—'}
                       </p>
                     </div>
                     <div className="card-surface px-3.5 py-2">
                       <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--text-3)]">
-                        No. de pre-aprobación
+                        Fuente de referencia
                       </p>
                       <p className="text-sm font-semibold text-[var(--text-1)]">
-                        {client.pre_approval_number ?? '—'}
+                        {client.referral_source ?? '—'}
                       </p>
                     </div>
                   </div>
 
                   <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--teal-700)] mb-2">
-                    Historial de visitas ({clientAppointments.length})
+                    Historial de citas ({clientAppointments.length})
                   </p>
 
                   {clientAppointments.length === 0 ? (
                     <p className="text-sm text-[var(--text-3)] card-surface p-3.5 flex items-center gap-2">
                       <Home className="w-4 h-4 text-[var(--text-4)] shrink-0" />
-                      Este cliente todavía no tiene citas registradas.
+                      Este paciente todavía no tiene citas registradas.
                     </p>
                   ) : (
                     <div className="card-surface overflow-x-auto">
@@ -140,7 +140,7 @@ export function ClientsTable({
                         <thead>
                           <tr className="text-[10px] uppercase tracking-wide text-[var(--text-3)] border-b border-[var(--border)]">
                             <th className="text-left font-semibold px-3.5 py-2">Fecha y hora</th>
-                            <th className="text-left font-semibold px-3.5 py-2">Propiedad/Servicio</th>
+                            <th className="text-left font-semibold px-3.5 py-2">Servicio</th>
                             <th className="text-left font-semibold px-3.5 py-2 hidden sm:table-cell">Duración</th>
                             <th className="text-left font-semibold px-3.5 py-2">Estado</th>
                             <th className="text-left font-semibold px-3.5 py-2 hidden sm:table-cell">Pago</th>

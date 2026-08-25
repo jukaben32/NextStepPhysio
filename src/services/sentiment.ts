@@ -40,9 +40,9 @@ export async function analyzeSentiment(
           {
             role: 'system',
             content:
-              'You classify the overall sentiment of the CLIENT (not the AI agent) in a real estate phone call ' +
-              'transcript. Reply with JSON only: {"sentiment": "positive" | "neutral" | "negative"}. ' +
-              'positive = interested, satisfied, enthusiastic about a property or booking. ' +
+              'You classify the overall sentiment of the CLIENT (not the AI agent) in a physical rehab clinic phone ' +
+              'call transcript. Reply with JSON only: {"sentiment": "positive" | "neutral" | "negative"}. ' +
+              'positive = interested, satisfied, enthusiastic about a program or booking. ' +
               'negative = frustrated, annoyed, uninterested, or complained. ' +
               'neutral = purely informational, undecided, or the tone is unclear.',
           },
