@@ -1,6 +1,14 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
 import type { Database } from '@/types/database'
-import type { Appointment, PortalAppointment, SupportTicket, SupportMessage, PortalSupportTicket } from '@/types'
+import type {
+  Appointment,
+  PortalAppointment,
+  SupportTicket,
+  SupportMessage,
+  PortalSupportTicket,
+  RecoveryLog,
+  PrescribedExerciseWithVideo,
+} from '@/types'
 
 type DB = SupabaseClient<Database>
 
@@ -238,4 +246,42 @@ export async function addClientMessageToTicket(
   if (error) throw error
   await admin.from('support_tickets').update({ updated_at: new Date().toISOString() }).eq('id', ticketId)
   return data
+}
+
+// ─── Recovery progress & prescribed exercises (read-only for patients) ────
+
+export async function listRecoveryLogsForClientUser(admin: DB, userId: string): Promise<RecoveryLog[]> {
+  const clientRows = await listClientRowsForUser(admin, userId)
+  if (clientRows.length === 0) return []
+  const { data, error } = await admin
+    .from('recovery_logs')
+    .select('*')
+    .in(
+      'client_id',
+      clientRows.map((c) => c.id)
+    )
+    .order('logged_at', { ascending: false })
+  if (error) throw error
+  return data ?? []
+}
+
+export async function listPrescribedExercisesForClientUser(
+  admin: DB,
+  userId: string
+): Promise<PrescribedExerciseWithVideo[]> {
+  const clientRows = await listClientRowsForUser(admin, userId)
+  if (clientRows.length === 0) return []
+  const { data, error } = await admin
+    .from('prescribed_exercises')
+    .select('*, exercise_videos(id, title, video_url, thumbnail_url, duration_seconds, category)')
+    .in(
+      'client_id',
+      clientRows.map((c) => c.id)
+    )
+    .order('assigned_at', { ascending: false })
+  if (error) throw error
+  return ((data ?? []) as unknown as Array<Record<string, unknown>>).map((row) => {
+    const { exercise_videos, ...rest } = row
+    return { ...rest, video: exercise_videos } as PrescribedExerciseWithVideo
+  })
 }

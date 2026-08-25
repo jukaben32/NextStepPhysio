@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { CalendarCheck, MessageCircleQuestion, LogOut } from 'lucide-react'
+import { CalendarCheck, Activity, MessageCircleQuestion, LogOut } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 
 export function PortalNav() {
@@ -21,9 +21,9 @@ export function PortalNav() {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-3">
         <div className="flex items-center gap-2">
           <span className="grid place-items-center w-7 h-7 rounded-lg bg-[var(--teal-700)] text-white font-display font-bold text-sm">
-            I
+            N
           </span>
-          <span className="font-display font-semibold text-[var(--text-1)]">Client Portal</span>
+          <span className="font-display font-semibold text-[var(--text-1)]">Patient Portal</span>
         </div>
         <nav className="flex items-center gap-1.5">
           <Link
@@ -31,7 +31,14 @@ export function PortalNav() {
             className={`btn-secondary !py-1.5 !text-xs ${pathname === '/portal' ? '!bg-[var(--teal-50)] !text-[var(--teal-700)] !border-transparent' : ''}`}
           >
             <CalendarCheck className="w-3.5 h-3.5" />
-            My Viewings
+            My Appointments
+          </Link>
+          <Link
+            href="/portal/progress"
+            className={`btn-secondary !py-1.5 !text-xs ${pathname === '/portal/progress' ? '!bg-[var(--teal-50)] !text-[var(--teal-700)] !border-transparent' : ''}`}
+          >
+            <Activity className="w-3.5 h-3.5" />
+            My Progress
           </Link>
           <Link
             href="/portal/support"
