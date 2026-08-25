@@ -98,7 +98,7 @@ export function WidgetTemplatesGallery({
           return (
             <div
               key={template.id}
-              className="relative flex flex-col rounded-2xl border border-[var(--border)] bg-[var(--bg-surface)] overflow-hidden transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(14,32,25,0.10)]"
+              className="relative flex flex-col rounded-2xl border border-[var(--border)] bg-[var(--bg-surface)] overflow-hidden transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(20,40,44,0.10)]"
             >
               <span className="absolute inset-x-0 top-0 h-1" style={{ background: color }} />
 

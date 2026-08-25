@@ -16,7 +16,7 @@ export function WidgetConfigForm({
 }) {
   const [form, setForm] = useState({
     isEnabled: initialWidget?.is_enabled ?? true,
-    primaryColor: initialWidget?.primary_color ?? '#0E7C5A',
+    primaryColor: initialWidget?.primary_color ?? '#1B5E6B',
     greetingMessage: initialWidget?.greeting_message ?? '¡Hola! Pregúntame sobre cualquiera de nuestras propiedades.',
     allowedOrigins: (initialWidget?.allowed_origins ?? []).join('\n'),
   })

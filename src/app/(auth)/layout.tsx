@@ -35,17 +35,17 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
           className="pointer-events-none absolute inset-0 opacity-40"
           style={{
             background:
-              'radial-gradient(600px circle at 15% 15%, rgba(14,124,90,0.35), transparent 60%), radial-gradient(500px circle at 85% 85%, rgba(61,185,138,0.20), transparent 60%)',
+              'radial-gradient(600px circle at 15% 15%, rgba(27,94,107,0.35), transparent 60%), radial-gradient(500px circle at 85% 85%, rgba(95,163,172,0.20), transparent 60%)',
           }}
         />
 
         <div className="relative">
           <Link href="/" className="flex items-center gap-2.5">
             <span className="grid place-items-center w-10 h-10 rounded-xl bg-[var(--teal-700)] text-white font-display font-bold text-lg">
-              I
+              N
             </span>
             <span className="font-display font-semibold text-xl">
-              Inmobil<span className="text-[var(--teal-400)]">IA</span>Call
+              <span className="text-[var(--teal-400)]">NextStep</span> Physio
             </span>
           </Link>
 
@@ -90,10 +90,10 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
       <div className="flex flex-col items-center justify-center p-4 sm:p-8">
         <Link href="/" className="flex lg:hidden items-center gap-2 mb-6">
           <span className="grid place-items-center w-10 h-10 rounded-xl bg-[var(--teal-700)] text-white font-display font-bold text-lg">
-            I
+            N
           </span>
           <span className="font-display font-semibold text-lg text-[var(--text-1)]">
-            Inmobil<span className="text-[var(--teal-700)]">IA</span>Call
+            <span className="text-[var(--teal-700)]">NextStep</span> Physio
           </span>
         </Link>
 

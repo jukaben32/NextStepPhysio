@@ -98,10 +98,10 @@ export function DashboardSidebar({
       <header className="lg:hidden h-14 shrink-0 flex items-center justify-between px-4 bg-[var(--teal-900)] text-[var(--bg-page)]">
         <div className="flex items-center gap-2">
           <span className="grid place-items-center w-8 h-8 rounded-lg bg-[var(--teal-700)] text-white font-display font-bold">
-            I
+            N
           </span>
           <span className="font-display font-semibold">
-            Inmobil<span className="text-[var(--teal-400)]">IA</span>Call
+            <span className="text-[var(--teal-400)]">NextStep</span> Physio
           </span>
         </div>
         <button
@@ -129,10 +129,10 @@ export function DashboardSidebar({
         <div className="h-16 flex items-center justify-between gap-2 px-6 border-b border-white/10 shrink-0">
           <div className="flex items-center gap-2">
             <span className="grid place-items-center w-9 h-9 rounded-xl bg-[var(--teal-700)] text-white font-display font-bold text-lg">
-              I
+              N
             </span>
             <span className="font-display font-semibold text-lg">
-              Inmobil<span className="text-[var(--teal-400)]">IA</span>Call
+              <span className="text-[var(--teal-400)]">NextStep</span> Physio
             </span>
           </div>
           <button

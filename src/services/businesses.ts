@@ -61,7 +61,7 @@ export async function createBusiness(
   const { error: widgetError } = await supabase.from('widgets').insert({
     business_id: data.id,
     is_enabled: true,
-    primary_color: '#0E7C5A',
+    primary_color: '#1B5E6B',
     greeting_message: '¡Hola! Pregúntame sobre cualquiera de nuestras propiedades.',
     allowed_origins: [],
   })

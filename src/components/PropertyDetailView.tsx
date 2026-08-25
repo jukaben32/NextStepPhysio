@@ -27,7 +27,7 @@ const STATUS_DOT_CLASSES: Record<string, string> = {
   red: 'bg-red-500',
 }
 
-const DEFAULT_WIDGET_COLOR = '#0E7C5A'
+const DEFAULT_WIDGET_COLOR = '#1B5E6B'
 
 const PROPERTY_TYPE_LABELS: Record<string, string> = {
   house: 'Casa',
